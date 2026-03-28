@@ -7,6 +7,7 @@ import Vluchten from './pages/Vluchten.jsx'
 import Hotels from './pages/Hotels.jsx'
 import Tips from './pages/Tips.jsx'
 import Info from './pages/Info.jsx'
+import Kaart from './pages/Kaart.jsx'
 
 const PAGE_TITLES = {
   vandaag: 'Thailand 2026 ✈️',
@@ -15,6 +16,7 @@ const PAGE_TITLES = {
   hotels: 'Verblijven',
   tips: 'Tips & Activiteiten',
   info: 'Info & Handig',
+  kaart: 'Reiskaart',
 }
 
 export default function App() {
@@ -47,6 +49,7 @@ export default function App() {
         {page === 'hotels' && <Hotels />}
         {page === 'tips' && <Tips />}
         {page === 'info' && <Info />}
+        {page === 'kaart' && <Kaart />}
       </main>
 
       <BottomNav page={page} setPage={setPage} />

@@ -7,8 +7,8 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f1f5f9;
-  color: #1e293b;
+  background: #f5f2ee;
+  color: #1a1a1a;
   min-height: 100vh;
   max-width: 430px;
   margin: 0 auto;
@@ -25,46 +25,51 @@ body {
 ::-webkit-scrollbar { display: none; }
 * { scrollbar-width: none; }
 
-/* City badge colors */
-.badge-bangkok { background: #fef3c7; color: #92400e; }
-.badge-chiangmai { background: #d1fae5; color: #065f46; }
-.badge-khaolak { background: #e0f2fe; color: #075985; }
-.badge-gray { background: #f1f5f9; color: #475569; }
-
 /* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.fade-in { animation: fadeIn 0.25s ease; }
 
-.fade-in {
-  animation: fadeIn 0.25s ease;
-}
-
-/* Pill tabs */
+/* Bottom nav tabs */
 .tab-pill {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  padding: 8px 4px;
-  font-size: 10px;
-  font-weight: 500;
-  color: #94a3b8;
+  gap: 2px;
+  padding: 6px 2px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #b0a99f;
   cursor: pointer;
   transition: color 0.15s;
   border: none;
   background: none;
   letter-spacing: 0.01em;
 }
+.tab-pill.active { color: #1a1a1a; }
+.tab-pill .tab-icon { font-size: 20px; line-height: 1; }
 
-.tab-pill.active {
-  color: #0f172a;
+/* Leaflet overrides */
+.leaflet-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  border-radius: 16px;
 }
-
-.tab-pill .tab-icon {
-  font-size: 22px;
-  line-height: 1;
+.leaflet-popup-content-wrapper {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  padding: 0 !important;
+}
+.leaflet-popup-content {
+  margin: 0 !important;
+  min-width: 160px;
+}
+.leaflet-popup-tip-container { display: none; }
+.leaflet-control-attribution { display: none; }
+.leaflet-control-zoom a {
+  color: #1a1a1a !important;
+  border-color: #e8e4df !important;
 }

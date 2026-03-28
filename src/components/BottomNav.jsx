@@ -6,6 +6,7 @@ export default function BottomNav({ page, setPage }) {
     { id: 'hotels', icon: '🏨', label: 'Hotels' },
     { id: 'tips', icon: '📍', label: 'Tips' },
     { id: 'info', icon: 'ℹ️', label: 'Info' },
+    { id: 'kaart', icon: '🗺️', label: 'Kaart' },
   ]
 
   return (
