@@ -7,6 +7,13 @@ const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=
 const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 const CITY_EMOJIS = { 'Bangkok': '🌆', 'Chiang Mai': '🏔️', 'Khao Lak': '🌊' }
 
+// Google Maps restaurant lijsten per stad (voeg Khao Lak toe als de lijst klaar is)
+const RESTAURANT_LISTS = {
+  'Bangkok':    'https://maps.app.goo.gl/zxSTRyEYq7P4Byum7',
+  'Chiang Mai': 'https://maps.app.goo.gl/9PFB7wo96tkNPLps5',
+  'Khao Lak':   null, // volgt nog
+}
+
 export default function Tips() {
   const c = useTheme()
   const [checked, setChecked] = useState(() => {
@@ -60,20 +67,39 @@ export default function Tips() {
         </div>
       </div>
 
-      {/* TripAdvisor button for current city */}
-      <a
-        href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent('restaurants ' + activeCity + ' Thailand')}`}
-        target="_blank" rel="noopener noreferrer"
-        style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          background: '#00af87', color: 'white', borderRadius: 14,
-          padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none',
-          marginBottom: 14,
-        }}
-      >
-        <img src={TA_ICON} width={18} height={18} alt="" style={{ borderRadius: 3 }} />
-        Restaurants in {activeCity}
-      </a>
+      {/* Restaurant knoppen */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+        {/* Google Maps lijstje (alleen als URL beschikbaar) */}
+        {RESTAURANT_LISTS[activeCity] && (
+          <a
+            href={RESTAURANT_LISTS[activeCity]}
+            target="_blank" rel="noopener noreferrer"
+            style={{
+              flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              background: '#EBF3FE', color: '#1a73e8', borderRadius: 14,
+              padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none',
+              border: '1.5px solid #c5d9f7',
+            }}
+          >
+            <img src={MAPS_ICON} width={18} height={18} alt="" />
+            Restaurantlijst {activeCity}
+          </a>
+        )}
+        {/* TripAdvisor zoeken */}
+        <a
+          href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent('restaurants ' + activeCity + ' Thailand')}`}
+          target="_blank" rel="noopener noreferrer"
+          style={{
+            flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            background: '#e6f7f4', color: '#00af87', borderRadius: 14,
+            padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none',
+            border: '1.5px solid #b2e8de',
+          }}
+        >
+          <img src={TA_ICON} width={18} height={18} alt="" style={{ borderRadius: 3 }} />
+          TripAdvisor
+        </a>
+      </div>
 
       {/* City tabs */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
