@@ -20,23 +20,23 @@ const PAGE_TITLES = {
 }
 
 export default function App() {
-  const [page, setPage] = useState('vandaag')
+  const [page, setPage] = useState('kaart')
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f1f5f9' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f2ee' }}>
       {/* Header */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: 'white', borderBottom: '1px solid #f1f5f9',
+        background: 'white', borderBottom: '1px solid #ede9e3',
         padding: '10px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
         <span style={{ fontSize: 20 }}>🇹🇭</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: '#0f172a', lineHeight: 1.1 }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: '#1a1a1a', lineHeight: 1.1 }}>
             {PAGE_TITLES[page]}
           </div>
-          <div style={{ fontSize: 11, color: '#94a3b8' }}>6 – 24 april 2026</div>
+          <div style={{ fontSize: 11, color: '#8c8279' }}>6 – 24 april 2026</div>
         </div>
         <TimeBar />
       </div>

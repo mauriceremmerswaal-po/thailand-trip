@@ -80,8 +80,31 @@ export default function Info() {
 
   return (
     <div className="fade-in" style={{ padding: '16px 16px 100px' }}>
-      <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>Info & Handig</div>
-      <div style={{ fontSize: 13, color: '#94a3b8', marginBottom: 20 }}>Weer · Wisselkoers · Noodgevallen</div>
+
+      {/* Polarsteps dark header */}
+      <div style={{
+        background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)',
+        borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', right: -10, top: -10, fontSize: 80, opacity: 0.15, lineHeight: 1 }}>ℹ️</div>
+        <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4, fontWeight: 600, letterSpacing: '0.08em' }}>THAILAND 2026</div>
+        <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Info & Handig</div>
+        <div style={{ fontSize: 13, opacity: 0.7 }}>Weer · Wisselkoers · Noodgevallen</div>
+        <div style={{ display: 'flex', gap: 0, marginTop: 18 }}>
+          {[
+            { value: '🌤️', label: 'Weer' },
+            { value: '฿', label: 'Koers' },
+            { value: '🚨', label: 'Nood' },
+            { value: '📱', label: 'Apps' },
+          ].map((s, i) => (
+            <div key={i} style={{ flex: 1, textAlign: 'center', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.15)' : 'none' }}>
+              <div style={{ fontSize: 20, fontWeight: 900, lineHeight: 1 }}>{s.value}</div>
+              <div style={{ fontSize: 10, opacity: 0.6, marginTop: 3, fontWeight: 600, letterSpacing: '0.05em' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Weather */}
       <Section title="🌤️ Huidig weer & voorspelling">
@@ -91,24 +114,21 @@ export default function Info() {
             return (
               <div key={city.name} style={{
                 background: 'white', borderRadius: 16,
-                border: `1px solid ${city.color}33`,
-                overflow: 'hidden',
+                border: `1px solid ${city.color}33`, overflow: 'hidden',
               }}>
-                {/* Current */}
                 <div style={{
-                  background: `${city.color}12`,
-                  padding: '14px 16px',
+                  background: `${city.color}0f`, padding: '14px 16px',
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <span style={{ fontSize: 26 }}>{city.emoji}</span>
                     <div>
-                      <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>{city.name}</div>
-                      <div style={{ fontSize: 12, color: '#64748b' }}>
+                      <div style={{ fontSize: 14, fontWeight: 700, color: '#1a1a1a' }}>{city.name}</div>
+                      <div style={{ fontSize: 12, color: '#8c8279' }}>
                         {w ? `${weatherEmoji(w.code)} ${w.desc}` : 'Laden...'}
                       </div>
                       {w && (
-                        <div style={{ fontSize: 11, color: '#94a3b8' }}>
+                        <div style={{ fontSize: 11, color: '#8c8279' }}>
                           💧 {w.humidity}% · Gevoeld {w.feels}°C
                         </div>
                       )}
@@ -118,29 +138,19 @@ export default function Info() {
                     {w ? `${w.temp}°` : '—'}
                   </div>
                 </div>
-
-                {/* Forecast */}
                 {w?.forecast?.length > 0 && (
-                  <div style={{
-                    display: 'flex', borderTop: `1px solid ${city.color}22`,
-                  }}>
+                  <div style={{ display: 'flex', borderTop: `1px solid ${city.color}22` }}>
                     {w.forecast.map((day, i) => (
                       <div key={i} style={{
                         flex: 1, padding: '10px 8px', textAlign: 'center',
                         borderRight: i < w.forecast.length - 1 ? `1px solid ${city.color}22` : 'none',
                       }}>
-                        <div style={{ fontSize: 11, color: '#94a3b8', fontWeight: 600, marginBottom: 3 }}>
+                        <div style={{ fontSize: 11, color: '#8c8279', fontWeight: 600, marginBottom: 3 }}>
                           {i === 0 ? 'Vandaag' : dayName(day.date)}
                         </div>
-                        <div style={{ fontSize: 22, lineHeight: 1, marginBottom: 3 }}>
-                          {weatherEmoji(day.code)}
-                        </div>
-                        <div style={{ fontSize: 12, fontWeight: 700, color: '#1e293b' }}>
-                          {day.max}°
-                        </div>
-                        <div style={{ fontSize: 11, color: '#94a3b8' }}>
-                          {day.min}°
-                        </div>
+                        <div style={{ fontSize: 22, lineHeight: 1, marginBottom: 3 }}>{weatherEmoji(day.code)}</div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#1a1a1a' }}>{day.max}°</div>
+                        <div style={{ fontSize: 11, color: '#8c8279' }}>{day.min}°</div>
                       </div>
                     ))}
                   </div>
@@ -153,16 +163,13 @@ export default function Info() {
 
       {/* EUR/THB Calculator */}
       <Section title="💱 Wisselkoers EUR → THB">
-        <div style={{ background: 'white', borderRadius: 16, padding: '16px', border: '1px solid #f1f5f9' }}>
-          <div style={{ fontSize: 12, color: '#94a3b8', marginBottom: 12 }}>
+        <div style={{ background: 'white', borderRadius: 16, padding: '16px', border: '1px solid #ede9e3' }}>
+          <div style={{ fontSize: 12, color: '#8c8279', marginBottom: 12 }}>
             Live koers: 1 EUR = {rate.toFixed(2)} THB
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
             <div style={{ flex: 1, position: 'relative' }}>
-              <span style={{
-                position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
-                fontSize: 16, fontWeight: 700, color: '#94a3b8',
-              }}>€</span>
+              <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 16, fontWeight: 700, color: '#8c8279' }}>€</span>
               <input
                 type="number"
                 value={eur}
@@ -171,13 +178,13 @@ export default function Info() {
                 style={{
                   width: '100%', padding: '12px 12px 12px 30px',
                   fontSize: 18, fontWeight: 700, borderRadius: 12,
-                  border: '2px solid #e2e8f0', outline: 'none',
-                  fontVariantNumeric: 'tabular-nums',
+                  border: '1.5px solid #ede9e3', outline: 'none',
+                  fontVariantNumeric: 'tabular-nums', background: 'white',
                 }}
               />
             </div>
-            <div style={{ fontSize: 20, color: '#94a3b8' }}>→</div>
-            <div style={{ flex: 1, background: '#f8fafc', borderRadius: 12, padding: '12px', textAlign: 'center' }}>
+            <div style={{ fontSize: 20, color: '#8c8279' }}>→</div>
+            <div style={{ flex: 1, background: '#f5f2ee', borderRadius: 12, padding: '12px', textAlign: 'center' }}>
               <div style={{ fontSize: 18, fontWeight: 800, color: '#10b981', fontVariantNumeric: 'tabular-nums' }}>
                 {thb ? `฿ ${parseInt(thb).toLocaleString()}` : '—'}
               </div>
@@ -187,10 +194,10 @@ export default function Info() {
             {[10, 20, 50, 100, 200, 500].map(amt => (
               <button key={amt} onClick={() => setEur(String(amt))}
                 style={{
-                  background: eur == amt ? '#10b981' : '#f1f5f9',
-                  color: eur == amt ? 'white' : '#475569',
+                  background: eur == amt ? '#10b981' : '#f5f2ee',
+                  color: eur == amt ? 'white' : '#8c8279',
                   border: 'none', borderRadius: 8, padding: '6px 12px',
-                  fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  fontSize: 13, fontWeight: 700, cursor: 'pointer',
                 }}>
                 €{amt}
               </button>
@@ -207,20 +214,18 @@ export default function Info() {
               style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 background: 'white', borderRadius: 14, padding: '12px 14px',
-                border: '1px solid #f1f5f9', textDecoration: 'none',
+                border: '1px solid #ede9e3', textDecoration: 'none',
               }}>
               <div style={{
                 width: 40, height: 40, borderRadius: 12,
-                background: `${e.color}15`, display: 'flex', alignItems: 'center',
+                background: `${e.color}12`, display: 'flex', alignItems: 'center',
                 justifyContent: 'center', fontSize: 18, flexShrink: 0,
               }}>{e.icon}</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#1e293b' }}>{e.name}</div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: e.color, fontVariantNumeric: 'tabular-nums' }}>
-                  {e.number}
-                </div>
+                <div style={{ fontSize: 14, fontWeight: 600, color: '#1a1a1a' }}>{e.name}</div>
+                <div style={{ fontSize: 13, fontWeight: 800, color: e.color, fontVariantNumeric: 'tabular-nums' }}>{e.number}</div>
               </div>
-              <div style={{ fontSize: 13, color: '#94a3b8' }}>📞</div>
+              <div style={{ fontSize: 13, color: '#8c8279' }}>📞</div>
             </a>
           ))}
         </div>
@@ -228,8 +233,8 @@ export default function Info() {
 
       {/* Familie */}
       <Section title="👨‍👩‍👧 Deel met familie">
-        <div style={{ background: 'white', borderRadius: 16, padding: '16px', border: '1px solid #f1f5f9' }}>
-          <div style={{ fontSize: 14, color: '#475569', marginBottom: 12, lineHeight: 1.5 }}>
+        <div style={{ background: 'white', borderRadius: 16, padding: '16px', border: '1px solid #ede9e3' }}>
+          <div style={{ fontSize: 14, color: '#8c8279', marginBottom: 12, lineHeight: 1.5 }}>
             Familie kan deze app ook gebruiken om te zien waar jullie zijn en wanneer vluchten landen!
           </div>
           <button
@@ -244,7 +249,7 @@ export default function Info() {
             }}
             style={{
               width: '100%', background: '#25D366', color: 'white',
-              border: 'none', borderRadius: 14, padding: '14px',
+              border: 'none', borderRadius: 12, padding: '14px',
               fontSize: 14, fontWeight: 700, cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
@@ -265,12 +270,12 @@ export default function Info() {
           ].map(app => (
             <div key={app.name} style={{
               background: 'white', borderRadius: 14, padding: '12px 14px',
-              border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: 10,
+              border: '1px solid #ede9e3', display: 'flex', alignItems: 'center', gap: 10,
             }}>
               <span style={{ fontSize: 22 }}>{app.icon}</span>
               <div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: app.color }}>{app.name}</div>
-                <div style={{ fontSize: 12, color: '#64748b' }}>{app.desc}</div>
+                <div style={{ fontSize: 12, color: '#8c8279' }}>{app.desc}</div>
               </div>
             </div>
           ))}
@@ -283,7 +288,9 @@ export default function Info() {
 function Section({ title, children }) {
   return (
     <div style={{ marginBottom: 24 }}>
-      <div style={{ fontSize: 14, fontWeight: 800, color: '#0f172a', marginBottom: 12 }}>{title}</div>
+      <div style={{ fontSize: 11, fontWeight: 800, color: '#8c8279', marginBottom: 12, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+        {title}
+      </div>
       {children}
     </div>
   )
