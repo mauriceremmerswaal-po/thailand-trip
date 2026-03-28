@@ -4,13 +4,11 @@ export default function BottomNav({ page, setPage }) {
   const c = useTheme()
 
   const tabs = [
-    { id: 'kaart', icon: '🗺️', label: 'Kaart' },
+    { id: 'kaart',  icon: '🗺️', label: 'Kaart' },
     { id: 'vandaag', icon: '📅', label: 'Vandaag' },
-    { id: 'tijdlijn', icon: '🗓️', label: 'Schema' },
-    { id: 'vluchten', icon: '✈️', label: 'Vluchten' },
-    { id: 'hotels', icon: '🏨', label: 'Hotels' },
-    { id: 'tips', icon: '📍', label: 'Tips' },
-    { id: 'info', icon: 'ℹ️', label: 'Info' },
+    { id: 'tips',   icon: '📍', label: 'Tips' },
+    { id: 'reis',   icon: '✈️', label: 'Reis' },
+    { id: 'info',   icon: 'ℹ️', label: 'Info' },
   ]
 
   return (
@@ -32,12 +30,12 @@ export default function BottomNav({ page, setPage }) {
             alignItems: 'center', justifyContent: 'center',
             padding: '6px 2px 4px',
             background: 'none', border: 'none', cursor: 'pointer',
-            color: page === tab.id ? c.text : c.muted,
+            color: page === tab.id ? '#f59e0b' : c.muted,
             fontWeight: page === tab.id ? 800 : 500,
             fontSize: 9, gap: 2, letterSpacing: '0.03em',
           }}
         >
-          <span style={{ fontSize: 18, lineHeight: 1 }}>{tab.icon}</span>
+          <span style={{ fontSize: 20, lineHeight: 1 }}>{tab.icon}</span>
           {tab.label}
         </button>
       ))}

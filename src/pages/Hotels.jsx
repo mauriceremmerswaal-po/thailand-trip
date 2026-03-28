@@ -1,6 +1,9 @@
 import { hotels, CITY_COLORS } from '../data/tripData.js'
-import { mapsSearch, grabLink } from '../utils/links.js'
+import { mapsSearch } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
+
+const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
+const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 
 const CITY_EMOJIS = { 'Bangkok': '🌆', 'Chiang Mai': '🏔️', 'Khao Lak': '🏖️' }
 
@@ -9,6 +12,13 @@ const HOTEL_FEATURES = {
   'h2': ['Zwembad', 'Tuin', 'Restaurant', 'Wifi'],
   'h3': ['Privéstrand', 'Zwembad', 'Spa', 'Duiken', 'Restaurant', 'Wifi'],
   'h4': ['Zwembad', 'Spa', 'Fitness', 'Restaurant', 'Wifi'],
+}
+
+const HOTEL_PHOTOS = {
+  'h1': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=700&q=80',
+  'h2': 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=700&q=80',
+  'h3': 'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=700&q=80',
+  'h4': 'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=700&q=80',
 }
 
 export default function Hotels() {
@@ -40,11 +50,28 @@ function HotelCard({ hotel: h }) {
   const color = CITY_COLORS[h.city] || '#6b7280'
   const emoji = CITY_EMOJIS[h.city] || '🏨'
   const features = HOTEL_FEATURES[h.id] || []
+  const photo = HOTEL_PHOTOS[h.id]
   const checkInDate = new Date(h.checkIn)
   const checkOutDate = new Date(h.checkOut)
 
   return (
     <div style={{ background: c.cardBg, borderRadius: 18, marginBottom: 16, border: `1px solid ${c.border}`, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+
+      {/* Hotel photo */}
+      {photo && (
+        <div style={{ height: 160, overflow: 'hidden', position: 'relative' }}>
+          <img
+            src={photo}
+            alt={h.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            onError={e => { e.target.parentElement.style.display = 'none' }}
+          />
+          <div style={{ position: 'absolute', bottom: 10, left: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ background: color, color: 'white', borderRadius: 8, padding: '3px 10px', fontSize: 11, fontWeight: 800 }}>{h.city}</div>
+          </div>
+        </div>
+      )}
+
       <div style={{ background: `${color}12`, padding: '18px 18px 14px', borderBottom: `1px solid ${c.border}`, display: 'flex', alignItems: 'flex-start', gap: 14 }}>
         <div style={{ width: 52, height: 52, borderRadius: 14, background: `${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>{emoji}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -98,18 +125,16 @@ function HotelCard({ hotel: h }) {
         </div>
       )}
 
-      <div style={{ padding: '12px 18px', display: 'flex', gap: 8 }}>
+      <div style={{ padding: '12px 18px', display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
         <a href={mapsSearch(h.mapsQuery || h.name)} target="_blank" rel="noopener noreferrer"
-          style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#4285F4', color: 'white', borderRadius: 10, padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
-          📍 Google Maps
+          title="Google Maps"
+          style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 12, textDecoration: 'none' }}>
+          <img src={MAPS_ICON} width={22} height={22} alt="Maps" />
         </a>
         <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(h.name)}`} target="_blank" rel="noopener noreferrer"
-          style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#00af87', color: 'white', borderRadius: 10, padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
-          🍽️ TripAdvisor
-        </a>
-        <a href={grabLink(h.mapsQuery)} target="_blank" rel="noopener noreferrer"
-          style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#00B14F', color: 'white', borderRadius: 10, padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
-          🟢 Grab
+          title="TripAdvisor"
+          style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 12, textDecoration: 'none' }}>
+          <img src={TA_ICON} width={22} height={22} alt="TripAdvisor" />
         </a>
       </div>
     </div>

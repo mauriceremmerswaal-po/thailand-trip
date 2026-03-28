@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { days, CITY_COLORS } from '../data/tripData.js'
-import { mapsSearch, grabLink } from '../utils/links.js'
+import { mapsSearch } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import Modal from '../components/Modal.jsx'
+
+const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
+const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 
 function getCityColor(city) {
   if (city.includes('Bangkok')) return CITY_COLORS['Bangkok']
@@ -25,6 +28,15 @@ function isPast(dateStr) {
 
 export default function Tijdlijn() {
   const c = useTheme()
+  const todayRef = useRef(null)
+
+  useEffect(() => {
+    if (todayRef.current) {
+      setTimeout(() => {
+        todayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }, 120)
+    }
+  }, [])
 
   return (
     <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
@@ -60,7 +72,7 @@ export default function Tijdlijn() {
         const isLast = i === days.length - 1
 
         return (
-          <div key={day.date} style={{ display: 'flex', gap: 12 }}>
+          <div key={day.date} ref={today ? todayRef : null} style={{ display: 'flex', gap: 12 }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 28, flexShrink: 0 }}>
               <div style={{ width: today ? 22 : 14, height: today ? 22 : 14, borderRadius: '50%', background: past ? (c.isDark ? '#3d3d3d' : '#d4cfc9') : color, border: today ? `3px solid ${color}` : 'none', outline: today ? `3px solid ${color}33` : 'none', flexShrink: 0, marginTop: 14, zIndex: 1 }} />
               {!isLast && <div style={{ width: 2, flex: 1, minHeight: 16, background: past ? (c.isDark ? '#2d2d2d' : '#e8e3de') : `${color}33`, marginTop: 4 }} />}
@@ -111,23 +123,19 @@ function EventRow({ event: ev, color }) {
             {ev.optional && <span style={{ fontSize: 9, background: c.chipBg, color: c.muted, borderRadius: 4, padding: '1px 5px', fontWeight: 600 }}>optioneel</span>}
           </div>
           {ev.sub && <div style={{ fontSize: 11, color: c.muted, marginTop: 1 }}>{ev.sub}</div>}
-          <div style={{ display: 'flex', gap: 5, marginTop: 4, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 5, marginTop: 5, flexWrap: 'wrap', alignItems: 'center' }}>
             {ev.mapsQuery && (
               <a href={`https://maps.google.com/?q=${encodeURIComponent(ev.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#EBF3FE', color: '#4285F4', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                📍 Maps
-              </a>
-            )}
-            {ev.grab && (
-              <a href="https://www.grab.com/" target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#E6F7EE', color: '#00B14F', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                🟢 Grab
+                title="Google Maps"
+                style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 7, textDecoration: 'none', flexShrink: 0 }}>
+                <img src={MAPS_ICON} width={16} height={16} alt="Maps" />
               </a>
             )}
             {ev.mapsQuery && (
               <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(ev.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#e6f7f4', color: '#00af87', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                🍽️ TA
+                title="TripAdvisor"
+                style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 7, textDecoration: 'none', flexShrink: 0 }}>
+                <img src={TA_ICON} width={16} height={16} alt="TripAdvisor" />
               </a>
             )}
             {ev.info && (

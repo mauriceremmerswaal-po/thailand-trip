@@ -3,6 +3,8 @@ import { sights, CITY_COLORS } from '../data/tripData.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import Modal from '../components/Modal.jsx'
 
+const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
+const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 const CITY_EMOJIS = { 'Bangkok': '🌆', 'Chiang Mai': '🏔️', 'Khao Lak': '🌊' }
 
 export default function Tips() {
@@ -69,7 +71,8 @@ export default function Tips() {
           marginBottom: 14,
         }}
       >
-        🍽️ Restaurants in {activeCity} op TripAdvisor
+        <img src={TA_ICON} width={18} height={18} alt="" style={{ borderRadius: 3 }} />
+        Restaurants in {activeCity}
       </a>
 
       {/* City tabs */}
@@ -120,14 +123,16 @@ export default function Tips() {
                 {sight.tip && <div style={{ fontSize: 12, color: c.muted, lineHeight: 1.4, marginBottom: 6 }}>💡 {sight.tip}</div>}
 
                 {/* Action buttons */}
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
                   <a href={`https://maps.google.com/?q=${encodeURIComponent(sight.name + ' ' + activeCity + ' Thailand')}`} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#EBF3FE', color: '#4285F4', borderRadius: 8, padding: '4px 9px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                    📍 Maps
+                    title="Google Maps"
+                    style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 8, textDecoration: 'none' }}>
+                    <img src={MAPS_ICON} width={16} height={16} alt="Maps" />
                   </a>
                   <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(sight.name + ' ' + activeCity)}`} target="_blank" rel="noopener noreferrer"
-                    style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#e6f7f4', color: '#00af87', borderRadius: 8, padding: '4px 9px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
-                    🍽️ TA
+                    title="TripAdvisor"
+                    style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 8, textDecoration: 'none' }}>
+                    <img src={TA_ICON} width={16} height={16} alt="TripAdvisor" />
                   </a>
                   {sight.info && (
                     <button onClick={() => setModal(sight)}

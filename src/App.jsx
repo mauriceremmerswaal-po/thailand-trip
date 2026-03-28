@@ -3,21 +3,17 @@ import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import TimeBar from './components/TimeBar.jsx'
 import Vandaag from './pages/Vandaag.jsx'
-import Tijdlijn from './pages/Tijdlijn.jsx'
-import Vluchten from './pages/Vluchten.jsx'
-import Hotels from './pages/Hotels.jsx'
+import Reis from './pages/Reis.jsx'
 import Tips from './pages/Tips.jsx'
 import Info from './pages/Info.jsx'
 import Kaart from './pages/Kaart.jsx'
 
 const PAGE_TITLES = {
-  vandaag: 'Thailand 2026 ✈️',
-  tijdlijn: 'Reisschema',
-  vluchten: 'Vluchten',
-  hotels: 'Verblijven',
-  tips: 'Tips & Activiteiten',
-  info: 'Info & Handig',
   kaart: 'Reiskaart',
+  vandaag: 'Thailand 2026 ✈️',
+  tips: 'Tips & Activiteiten',
+  reis: 'Reis & Schema',
+  info: 'Info & Handig',
 }
 
 function AppContent() {
@@ -46,7 +42,6 @@ function AppContent() {
           <div style={{ fontSize: 11, color: c.muted }}>6 – 24 april 2026</div>
         </div>
         <TimeBar />
-        {/* Dark mode toggle */}
         <button
           onClick={c.toggleDark}
           style={{
@@ -62,13 +57,11 @@ function AppContent() {
 
       {/* Page content */}
       <main>
-        {page === 'vandaag' && <Vandaag />}
-        {page === 'tijdlijn' && <Tijdlijn />}
-        {page === 'vluchten' && <Vluchten />}
-        {page === 'hotels' && <Hotels />}
-        {page === 'tips' && <Tips />}
-        {page === 'info' && <Info />}
         {page === 'kaart' && <Kaart />}
+        {page === 'vandaag' && <Vandaag />}
+        {page === 'tips' && <Tips />}
+        {page === 'reis' && <Reis />}
+        {page === 'info' && <Info />}
       </main>
 
       <BottomNav page={page} setPage={changePage} />

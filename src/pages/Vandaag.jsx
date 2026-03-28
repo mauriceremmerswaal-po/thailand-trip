@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { days, CITY_COLORS } from '../data/tripData.js'
-import { mapsDirections, mapsSearch, grabLink, tripAdvisorSearch, HOME, SCHIPHOL } from '../utils/links.js'
+import { mapsDirections, mapsSearch, HOME, SCHIPHOL } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import Modal from '../components/Modal.jsx'
+
+const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
+const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 
 function getCityColor(city) {
   if (city.includes('Bangkok')) return CITY_COLORS['Bangkok']
@@ -98,13 +101,8 @@ export default function Vandaag() {
 
       {/* Departure day banner */}
       {displayDay && displayDay.date === '2026-04-06' && (
-        <div style={{
-          background: c.pendingBg, border: `1.5px solid ${c.pendingBorder}`,
-          borderRadius: 18, padding: '16px', marginBottom: 16,
-        }}>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#92400e', marginBottom: 8 }}>
-            🚗 Vertrekadvies vanuit Zoetermeer
-          </div>
+        <div style={{ background: c.pendingBg, border: `1.5px solid ${c.pendingBorder}`, borderRadius: 18, padding: '16px', marginBottom: 16 }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#92400e', marginBottom: 8 }}>🚗 Vertrekadvies vanuit Zoetermeer</div>
           <div style={{ fontSize: 13, color: '#78350f', marginBottom: 12 }}>
             Vlucht EK146 vertrekt om <strong>11:25</strong> → uiterlijk om <strong>09:00 op Schiphol</strong> → <strong>vertrek ~07:30</strong> van huis
           </div>
@@ -117,10 +115,7 @@ export default function Vandaag() {
 
       {/* Arrival day banner */}
       {displayDay && displayDay.date === '2026-04-24' && (
-        <div style={{
-          background: 'linear-gradient(135deg, #f0fdf8, #f7fdf4)',
-          border: '1.5px solid #10b98155', borderRadius: 18, padding: '16px', marginBottom: 16,
-        }}>
+        <div style={{ background: 'linear-gradient(135deg, #f0fdf8, #f7fdf4)', border: '1.5px solid #10b98155', borderRadius: 18, padding: '16px', marginBottom: 16 }}>
           <div style={{ fontSize: 14, fontWeight: 800, color: '#065f46', marginBottom: 8 }}>🏠 Aankomst op Schiphol: 13:15</div>
           <div style={{ fontSize: 13, color: '#047857', marginBottom: 12 }}>Vlucht EK147 landt om 13:15 op Schiphol (Amsterdam)</div>
           <a href={mapsDirections(SCHIPHOL, HOME)} target="_blank" rel="noopener noreferrer"
@@ -257,23 +252,19 @@ function EventRow({ event, cityColor }) {
             {event.optional && <span style={{ fontSize: 10, background: c.chipBg, color: c.muted, borderRadius: 6, padding: '1px 6px', fontWeight: 600 }}>optioneel</span>}
           </div>
           {event.sub && <div style={{ fontSize: 12, color: c.muted, marginTop: 2 }}>{event.sub}</div>}
-          <div style={{ display: 'flex', gap: 6, marginTop: 6, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 6, marginTop: 6, flexWrap: 'wrap', alignItems: 'center' }}>
             {event.mapsQuery && (
               <a href={`https://maps.google.com/?q=${encodeURIComponent(event.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#EBF3FE', color: '#4285F4', borderRadius: 8, padding: '4px 10px', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
-                📍 Maps
-              </a>
-            )}
-            {event.grab && (
-              <a href="https://www.grab.com/" target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#E6F7EE', color: '#00B14F', borderRadius: 8, padding: '4px 10px', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
-                🟢 Grab
+                title="Google Maps"
+                style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 8, textDecoration: 'none' }}>
+                <img src={MAPS_ICON} width={16} height={16} alt="Maps" />
               </a>
             )}
             {event.mapsQuery && (
               <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(event.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#e6f7f4', color: '#00af87', borderRadius: 8, padding: '4px 10px', fontSize: 12, fontWeight: 700, textDecoration: 'none' }}>
-                🍽️ TA
+                title="TripAdvisor"
+                style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 8, textDecoration: 'none' }}>
+                <img src={TA_ICON} width={16} height={16} alt="TripAdvisor" />
               </a>
             )}
             {event.info && (
