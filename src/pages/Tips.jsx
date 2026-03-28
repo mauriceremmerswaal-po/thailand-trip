@@ -1,22 +1,17 @@
 import { useState } from 'react'
 import { sights, CITY_COLORS } from '../data/tripData.js'
+import { useTheme } from '../context/ThemeContext.jsx'
+import Modal from '../components/Modal.jsx'
 
-const CITY_EMOJIS = {
-  'Bangkok': '🌆',
-  'Chiang Mai': '🏔️',
-  'Khao Lak': '🌊',
-}
+const CITY_EMOJIS = { 'Bangkok': '🌆', 'Chiang Mai': '🏔️', 'Khao Lak': '🌊' }
 
 export default function Tips() {
+  const c = useTheme()
   const [checked, setChecked] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('thailand_checked') || '{}')
-    } catch {
-      return {}
-    }
+    try { return JSON.parse(localStorage.getItem('thailand_checked') || '{}') } catch { return {} }
   })
-
   const [activeCity, setActiveCity] = useState('Bangkok')
+  const [modal, setModal] = useState(null)
 
   function toggle(id) {
     const next = { ...checked, [id]: !checked[id] }
@@ -26,18 +21,24 @@ export default function Tips() {
 
   const cities = Object.keys(sights)
   const cityColor = CITY_COLORS[activeCity] || '#6b7280'
-  const totalChecked = cities.reduce((sum, c) => sum + sights[c].filter(s => checked[s.id]).length, 0)
-  const totalSights = cities.reduce((sum, c) => sum + sights[c].length, 0)
+  const totalChecked = cities.reduce((sum, ct) => sum + sights[ct].filter(s => checked[s.id]).length, 0)
+  const totalSights = cities.reduce((sum, ct) => sum + sights[ct].length, 0)
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px' }}>
+    <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
+      {modal && (
+        <Modal
+          title={modal.name}
+          content={modal.info}
+          mapsQuery={modal.name + ' ' + activeCity}
+          tripadvisorQuery={modal.name + ' ' + activeCity}
+          onClose={() => setModal(null)}
+          color={cityColor}
+        />
+      )}
 
       {/* Polarsteps dark header */}
-      <div style={{
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)',
-        borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white',
-        position: 'relative', overflow: 'hidden',
-      }}>
+      <div style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)', borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', right: -10, top: -10, fontSize: 80, opacity: 0.15, lineHeight: 1 }}>📍</div>
         <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4, fontWeight: 600, letterSpacing: '0.08em' }}>THAILAND 2026</div>
         <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Tips & Activiteiten</div>
@@ -57,6 +58,20 @@ export default function Tips() {
         </div>
       </div>
 
+      {/* TripAdvisor button for current city */}
+      <a
+        href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent('restaurants ' + activeCity + ' Thailand')}`}
+        target="_blank" rel="noopener noreferrer"
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+          background: '#00af87', color: 'white', borderRadius: 14,
+          padding: '11px', fontSize: 13, fontWeight: 700, textDecoration: 'none',
+          marginBottom: 14,
+        }}
+      >
+        🍽️ Restaurants in {activeCity} op TripAdvisor
+      </a>
+
       {/* City tabs */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
         {cities.map(city => {
@@ -64,23 +79,10 @@ export default function Tips() {
           const isActive = activeCity === city
           const doneCount = sights[city].filter(s => checked[s.id]).length
           return (
-            <button
-              key={city}
-              onClick={() => setActiveCity(city)}
-              style={{
-                flex: 1, padding: '10px 6px', borderRadius: 14,
-                border: isActive ? `2px solid ${color}` : '1.5px solid #ede9e3',
-                background: isActive ? `${color}15` : 'white',
-                cursor: 'pointer', textAlign: 'center',
-              }}
-            >
+            <button key={city} onClick={() => setActiveCity(city)} style={{ flex: 1, padding: '10px 6px', borderRadius: 14, border: isActive ? `2px solid ${color}` : `1.5px solid ${c.border}`, background: isActive ? `${color}15` : c.cardBg, cursor: 'pointer', textAlign: 'center' }}>
               <div style={{ fontSize: 18 }}>{CITY_EMOJIS[city]}</div>
-              <div style={{ fontSize: 11, fontWeight: 800, color: isActive ? color : '#8c8279', marginTop: 3 }}>
-                {city}
-              </div>
-              <div style={{ fontSize: 10, color: '#8c8279', marginTop: 1 }}>
-                {doneCount}/{sights[city].length}
-              </div>
+              <div style={{ fontSize: 11, fontWeight: 800, color: isActive ? color : c.muted, marginTop: 3 }}>{city}</div>
+              <div style={{ fontSize: 10, color: c.muted, marginTop: 1 }}>{doneCount}/{sights[city].length}</div>
             </button>
           )
         })}
@@ -89,19 +91,11 @@ export default function Tips() {
       {/* Progress bar */}
       <div style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: 11, color: '#8c8279', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Gedaan in {activeCity}
-          </span>
-          <span style={{ fontSize: 12, fontWeight: 800, color: cityColor }}>
-            {sights[activeCity].filter(s => checked[s.id]).length} / {sights[activeCity].length}
-          </span>
+          <span style={{ fontSize: 11, color: c.muted, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Gedaan in {activeCity}</span>
+          <span style={{ fontSize: 12, fontWeight: 800, color: cityColor }}>{sights[activeCity].filter(s => checked[s.id]).length} / {sights[activeCity].length}</span>
         </div>
-        <div style={{ background: '#ede9e3', borderRadius: 8, height: 6 }}>
-          <div style={{
-            height: 6, borderRadius: 8, background: cityColor,
-            width: `${(sights[activeCity].filter(s => checked[s.id]).length / sights[activeCity].length) * 100}%`,
-            transition: 'width 0.3s',
-          }} />
+        <div style={{ background: c.border, borderRadius: 8, height: 6 }}>
+          <div style={{ height: 6, borderRadius: 8, background: cityColor, width: `${(sights[activeCity].filter(s => checked[s.id]).length / sights[activeCity].length) * 100}%`, transition: 'width 0.3s' }} />
         </div>
       </div>
 
@@ -110,41 +104,40 @@ export default function Tips() {
         {sights[activeCity].map(sight => {
           const done = !!checked[sight.id]
           return (
-            <button
-              key={sight.id}
-              onClick={() => toggle(sight.id)}
-              style={{
-                background: done ? `${cityColor}12` : 'white',
-                border: done ? `1.5px solid ${cityColor}44` : '1px solid #ede9e3',
-                borderRadius: 14, padding: '14px', textAlign: 'left',
-                cursor: 'pointer', display: 'flex', alignItems: 'flex-start', gap: 12, width: '100%',
-              }}
-            >
-              <div style={{
-                width: 26, height: 26, borderRadius: 8,
-                background: done ? cityColor : '#f5f2ee',
-                border: done ? 'none' : '2px solid #ede9e3',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, marginTop: 1, transition: 'all 0.15s',
-              }}>
+            <div key={sight.id} style={{ background: done ? `${cityColor}12` : c.cardBg, border: done ? `1.5px solid ${cityColor}44` : `1px solid ${c.border}`, borderRadius: 14, padding: '14px', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+              {/* Checkbox */}
+              <button
+                onClick={() => toggle(sight.id)}
+                style={{ width: 26, height: 26, borderRadius: 8, background: done ? cityColor : c.chipBg, border: done ? 'none' : `2px solid ${c.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1, transition: 'all 0.15s', cursor: 'pointer' }}
+              >
                 {done && <span style={{ color: 'white', fontSize: 14, fontWeight: 800 }}>✓</span>}
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{
-                  fontSize: 14, fontWeight: 700,
-                  color: done ? cityColor : '#1a1a1a',
-                  textDecoration: done ? 'line-through' : 'none',
-                  opacity: done ? 0.7 : 1, marginBottom: 3,
-                }}>
+              </button>
+
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: done ? cityColor : c.text, textDecoration: done ? 'line-through' : 'none', opacity: done ? 0.7 : 1, marginBottom: 3 }}>
                   {sight.name}
                 </div>
-                {sight.tip && (
-                  <div style={{ fontSize: 12, color: '#8c8279', lineHeight: 1.4 }}>
-                    💡 {sight.tip}
-                  </div>
-                )}
+                {sight.tip && <div style={{ fontSize: 12, color: c.muted, lineHeight: 1.4, marginBottom: 6 }}>💡 {sight.tip}</div>}
+
+                {/* Action buttons */}
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  <a href={`https://maps.google.com/?q=${encodeURIComponent(sight.name + ' ' + activeCity + ' Thailand')}`} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#EBF3FE', color: '#4285F4', borderRadius: 8, padding: '4px 9px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                    📍 Maps
+                  </a>
+                  <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(sight.name + ' ' + activeCity)}`} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#e6f7f4', color: '#00af87', borderRadius: 8, padding: '4px 9px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                    🍽️ TA
+                  </a>
+                  {sight.info && (
+                    <button onClick={() => setModal(sight)}
+                      style={{ display: 'flex', alignItems: 'center', gap: 3, background: c.chipBg, color: c.muted, borderRadius: 8, padding: '4px 9px', fontSize: 11, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+                      ℹ️ Info
+                    </button>
+                  )}
+                </div>
               </div>
-            </button>
+            </div>
           )
         })}
       </div>

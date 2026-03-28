@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import TimeBar from './components/TimeBar.jsx'
 import Vandaag from './pages/Vandaag.jsx'
@@ -19,26 +20,44 @@ const PAGE_TITLES = {
   kaart: 'Reiskaart',
 }
 
-export default function App() {
+function AppContent() {
   const [page, setPage] = useState('kaart')
+  const c = useTheme()
+
+  function changePage(newPage) {
+    setPage(newPage)
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f5f2ee' }}>
+    <div style={{ minHeight: '100vh', background: c.pageBg }}>
       {/* Header */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: 'white', borderBottom: '1px solid #ede9e3',
+        background: c.cardBg, borderBottom: `1px solid ${c.border}`,
         padding: '10px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
         <span style={{ fontSize: 20 }}>🇹🇭</span>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: '#1a1a1a', lineHeight: 1.1 }}>
+          <div style={{ fontSize: 15, fontWeight: 800, color: c.text, lineHeight: 1.1 }}>
             {PAGE_TITLES[page]}
           </div>
-          <div style={{ fontSize: 11, color: '#8c8279' }}>6 – 24 april 2026</div>
+          <div style={{ fontSize: 11, color: c.muted }}>6 – 24 april 2026</div>
         </div>
         <TimeBar />
+        {/* Dark mode toggle */}
+        <button
+          onClick={c.toggleDark}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontSize: 20, padding: '4px', lineHeight: 1,
+            opacity: 0.8,
+          }}
+          title={c.isDark ? 'Lichte modus' : 'Donkere modus'}
+        >
+          {c.isDark ? '☀️' : '🌙'}
+        </button>
       </div>
 
       {/* Page content */}
@@ -52,7 +71,15 @@ export default function App() {
         {page === 'kaart' && <Kaart />}
       </main>
 
-      <BottomNav page={page} setPage={setPage} />
+      <BottomNav page={page} setPage={changePage} />
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   )
 }

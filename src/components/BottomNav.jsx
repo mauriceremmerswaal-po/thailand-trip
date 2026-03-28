@@ -1,4 +1,8 @@
+import { useTheme } from '../context/ThemeContext.jsx'
+
 export default function BottomNav({ page, setPage }) {
+  const c = useTheme()
+
   const tabs = [
     { id: 'kaart', icon: '🗺️', label: 'Kaart' },
     { id: 'vandaag', icon: '📅', label: 'Vandaag' },
@@ -14,7 +18,7 @@ export default function BottomNav({ page, setPage }) {
       position: 'fixed', bottom: 0,
       left: '50%', transform: 'translateX(-50%)',
       width: '100%', maxWidth: 430,
-      background: '#f5f2ee', borderTop: '1px solid #ede9e3',
+      background: c.navBg, borderTop: `1px solid ${c.border}`,
       display: 'flex',
       paddingBottom: 'env(safe-area-inset-bottom, 6px)',
       zIndex: 100,
@@ -24,20 +28,13 @@ export default function BottomNav({ page, setPage }) {
           key={tab.id}
           onClick={() => setPage(tab.id)}
           style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            flex: 1, display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
             padding: '6px 2px 4px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: page === tab.id ? '#1a1a1a' : '#8c8279',
+            background: 'none', border: 'none', cursor: 'pointer',
+            color: page === tab.id ? c.text : c.muted,
             fontWeight: page === tab.id ? 800 : 500,
-            fontSize: 9,
-            gap: 2,
-            letterSpacing: '0.03em',
+            fontSize: 9, gap: 2, letterSpacing: '0.03em',
           }}
         >
           <span style={{ fontSize: 18, lineHeight: 1 }}>{tab.icon}</span>

@@ -19,8 +19,11 @@ export function fr24Link(flightNr) {
 }
 
 export function grabLink(destination) {
-  // Opens Grab app; user sets destination. Show address clearly for easy copy.
   return `https://www.grab.com/`
+}
+
+export function tripAdvisorSearch(query) {
+  return `https://www.tripadvisor.com/Search?q=${encodeURIComponent(query)}`
 }
 
 export const LOCATIONS = {

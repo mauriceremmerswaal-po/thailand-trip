@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import { days, CITY_COLORS } from '../data/tripData.js'
 import { mapsSearch, grabLink } from '../utils/links.js'
+import { useTheme } from '../context/ThemeContext.jsx'
+import Modal from '../components/Modal.jsx'
 
 function getCityColor(city) {
   if (city.includes('Bangkok')) return CITY_COLORS['Bangkok']
@@ -21,15 +24,12 @@ function isPast(dateStr) {
 }
 
 export default function Tijdlijn() {
-  return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px' }}>
+  const c = useTheme()
 
-      {/* Polarsteps dark header */}
-      <div style={{
-        background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)',
-        borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white',
-        position: 'relative', overflow: 'hidden',
-      }}>
+  return (
+    <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
+
+      <div style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)', borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', right: -10, top: -10, fontSize: 80, opacity: 0.15, lineHeight: 1 }}>🗓️</div>
         <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4, fontWeight: 600, letterSpacing: '0.08em' }}>THAILAND 2026</div>
         <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Reisschema</div>
@@ -44,19 +44,11 @@ export default function Tijdlijn() {
         </div>
       </div>
 
-      {/* City legend */}
       <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-        {[
-          { label: 'Bangkok', color: CITY_COLORS['Bangkok'] },
-          { label: 'Chiang Mai', color: CITY_COLORS['Chiang Mai'] },
-          { label: 'Khao Lak', color: CITY_COLORS['Khao Lak'] },
-        ].map(c => (
-          <div key={c.label} style={{
-            display: 'flex', alignItems: 'center', gap: 5,
-            background: `${c.color}18`, borderRadius: 20, padding: '4px 10px',
-          }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: c.color }} />
-            <span style={{ fontSize: 11, color: c.color, fontWeight: 700 }}>{c.label}</span>
+        {[{ label: 'Bangkok', color: CITY_COLORS['Bangkok'] }, { label: 'Chiang Mai', color: CITY_COLORS['Chiang Mai'] }, { label: 'Khao Lak', color: CITY_COLORS['Khao Lak'] }].map(ct => (
+          <div key={ct.label} style={{ display: 'flex', alignItems: 'center', gap: 5, background: `${ct.color}18`, borderRadius: 20, padding: '4px 10px' }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: ct.color }} />
+            <span style={{ fontSize: 11, color: ct.color, fontWeight: 700 }}>{ct.label}</span>
           </div>
         ))}
       </div>
@@ -70,59 +62,27 @@ export default function Tijdlijn() {
         return (
           <div key={day.date} style={{ display: 'flex', gap: 12 }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 28, flexShrink: 0 }}>
-              <div style={{
-                width: today ? 22 : 14, height: today ? 22 : 14,
-                borderRadius: '50%',
-                background: past ? '#d4cfc9' : color,
-                border: today ? `3px solid ${color}` : 'none',
-                outline: today ? `3px solid ${color}33` : 'none',
-                flexShrink: 0, marginTop: 14, zIndex: 1,
-              }} />
-              {!isLast && (
-                <div style={{ width: 2, flex: 1, minHeight: 16, background: past ? '#e8e3de' : `${color}33`, marginTop: 4 }} />
-              )}
+              <div style={{ width: today ? 22 : 14, height: today ? 22 : 14, borderRadius: '50%', background: past ? (c.isDark ? '#3d3d3d' : '#d4cfc9') : color, border: today ? `3px solid ${color}` : 'none', outline: today ? `3px solid ${color}33` : 'none', flexShrink: 0, marginTop: 14, zIndex: 1 }} />
+              {!isLast && <div style={{ width: 2, flex: 1, minHeight: 16, background: past ? (c.isDark ? '#2d2d2d' : '#e8e3de') : `${color}33`, marginTop: 4 }} />}
             </div>
-
             <div style={{ flex: 1, marginBottom: 12, opacity: past ? 0.55 : 1 }}>
-              <div style={{
-                background: 'white', borderRadius: 16, padding: '14px',
-                border: today ? `2px solid ${color}` : '1px solid #ede9e3',
-                boxShadow: today ? `0 4px 16px ${color}22` : '0 1px 4px rgba(0,0,0,0.04)',
-              }}>
+              <div style={{ background: c.cardBg, borderRadius: 16, padding: '14px', border: today ? `2px solid ${color}` : `1px solid ${c.border}`, boxShadow: today ? `0 4px 16px ${color}22` : '0 1px 4px rgba(0,0,0,0.04)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    {today && (
-                      <span style={{ fontSize: 10, background: color, color: 'white', borderRadius: 6, padding: '2px 7px', fontWeight: 800 }}>
-                        VANDAAG
-                      </span>
-                    )}
-                    <span style={{ fontSize: 13, fontWeight: 700, color: past ? '#8c8279' : '#1a1a1a' }}>
-                      {day.dayLabel}
-                    </span>
+                    {today && <span style={{ fontSize: 10, background: color, color: 'white', borderRadius: 6, padding: '2px 7px', fontWeight: 800 }}>VANDAAG</span>}
+                    <span style={{ fontSize: 13, fontWeight: 700, color: past ? c.muted : c.text }}>{day.dayLabel}</span>
                   </div>
-                  <span style={{ fontSize: 12, color: '#8c8279', fontVariantNumeric: 'tabular-nums' }}>
+                  <span style={{ fontSize: 12, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
                     {new Date(day.date).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </span>
                 </div>
-
-                <div style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 5,
-                  background: `${color}18`, borderRadius: 20, padding: '3px 10px', marginBottom: 10,
-                }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: `${color}18`, borderRadius: 20, padding: '3px 10px', marginBottom: 10 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: color }} />
                   <span style={{ fontSize: 11, fontWeight: 700, color }}>{day.city}</span>
                 </div>
-
-                {day.hotel && (
-                  <div style={{ fontSize: 12, color: '#8c8279', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4 }}>
-                    🏨 {day.hotel}
-                  </div>
-                )}
-
+                {day.hotel && <div style={{ fontSize: 12, color: c.muted, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4 }}>🏨 {day.hotel}</div>}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  {day.events.map((ev, j) => (
-                    <EventRow key={j} event={ev} color={color} />
-                  ))}
+                  {day.events.map((ev, j) => <EventRow key={j} event={ev} color={color} />)}
                 </div>
               </div>
             </div>
@@ -134,55 +94,51 @@ export default function Tijdlijn() {
 }
 
 function EventRow({ event: ev, color }) {
+  const c = useTheme()
+  const [modal, setModal] = useState(null)
   const isImportant = ev.type === 'flight' || ev.type === 'arrival' || ev.type === 'departure'
 
   return (
-    <div style={{
-      display: 'flex', alignItems: 'flex-start', gap: 8,
-      padding: '6px 8px', borderRadius: 10,
-      background: ev.pending ? '#fffbeb' : isImportant ? `${color}0a` : '#faf8f5',
-      border: ev.pending ? '1px dashed #f59e0b' : 'none',
-    }}>
-      <span style={{ fontSize: 15, flexShrink: 0, marginTop: 1 }}>{ev.icon}</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
-          {ev.time && (
-            <span style={{ fontSize: 12, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums' }}>
-              {ev.time}
-            </span>
-          )}
-          <span style={{ fontSize: 13, fontWeight: 600, color: '#1a1a1a' }}>{ev.title}</span>
-          {ev.pending && (
-            <span style={{ fontSize: 9, background: '#f59e0b', color: 'white', borderRadius: 4, padding: '1px 5px', fontWeight: 800 }}>
-              TE BOEKEN
-            </span>
-          )}
-          {ev.optional && (
-            <span style={{ fontSize: 9, background: '#f5f2ee', color: '#8c8279', borderRadius: 4, padding: '1px 5px', fontWeight: 600 }}>
-              optioneel
-            </span>
-          )}
-        </div>
-        {ev.sub && (
-          <div style={{ fontSize: 11, color: '#8c8279', marginTop: 1 }}>{ev.sub}</div>
-        )}
-        {(ev.mapsQuery || ev.grab) && (
-          <div style={{ display: 'flex', gap: 6, marginTop: 5 }}>
+    <>
+      {modal && <Modal title={modal.title} content={modal.content} mapsQuery={modal.mapsQuery} tripadvisorQuery={modal.tripadvisorQuery} onClose={() => setModal(null)} color={color} />}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, padding: '6px 8px', borderRadius: 10, background: ev.pending ? c.pendingBg : isImportant ? `${color}0a` : c.rowBg, border: ev.pending ? `1px dashed #f59e0b` : 'none' }}>
+        <span style={{ fontSize: 15, flexShrink: 0, marginTop: 1 }}>{ev.icon}</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexWrap: 'wrap' }}>
+            {ev.time && <span style={{ fontSize: 12, fontWeight: 800, color, fontVariantNumeric: 'tabular-nums' }}>{ev.time}</span>}
+            <span style={{ fontSize: 13, fontWeight: 600, color: c.text }}>{ev.title}</span>
+            {ev.pending && <span style={{ fontSize: 9, background: '#f59e0b', color: 'white', borderRadius: 4, padding: '1px 5px', fontWeight: 800 }}>TE BOEKEN</span>}
+            {ev.optional && <span style={{ fontSize: 9, background: c.chipBg, color: c.muted, borderRadius: 4, padding: '1px 5px', fontWeight: 600 }}>optioneel</span>}
+          </div>
+          {ev.sub && <div style={{ fontSize: 11, color: c.muted, marginTop: 1 }}>{ev.sub}</div>}
+          <div style={{ display: 'flex', gap: 5, marginTop: 4, flexWrap: 'wrap' }}>
             {ev.mapsQuery && (
-              <a href={mapsSearch(ev.mapsQuery)} target="_blank" rel="noopener noreferrer"
+              <a href={`https://maps.google.com/?q=${encodeURIComponent(ev.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
                 style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#EBF3FE', color: '#4285F4', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
                 📍 Maps
               </a>
             )}
             {ev.grab && (
-              <a href={grabLink(ev.mapsQuery)} target="_blank" rel="noopener noreferrer"
+              <a href="https://www.grab.com/" target="_blank" rel="noopener noreferrer"
                 style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#E6F7EE', color: '#00B14F', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
                 🟢 Grab
               </a>
             )}
+            {ev.mapsQuery && (
+              <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(ev.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 3, background: '#e6f7f4', color: '#00af87', borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                🍽️ TA
+              </a>
+            )}
+            {ev.info && (
+              <button onClick={() => setModal({ title: ev.title, content: ev.info, mapsQuery: ev.mapsQuery, tripadvisorQuery: ev.mapsQuery })}
+                style={{ display: 'flex', alignItems: 'center', gap: 3, background: c.chipBg, color: c.muted, borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, border: 'none', cursor: 'pointer' }}>
+                ℹ️ Info
+              </button>
+            )}
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
