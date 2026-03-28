@@ -66,7 +66,12 @@ function FlightSection({ title, color, flights: fls }) {
   const c = useTheme()
   return (
     <div style={{ marginBottom: 24 }}>
-      <div style={{ fontSize: 11, fontWeight: 800, color: c.muted, marginBottom: 12, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{title}</div>
+      <div style={{ marginBottom: 12 }}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: `${color}18`, borderRadius: 20, padding: '5px 14px' }}>
+          <div style={{ width: 7, height: 7, borderRadius: '50%', background: color, flexShrink: 0 }} />
+          <span style={{ fontSize: 12, fontWeight: 800, color, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{title}</span>
+        </div>
+      </div>
       {fls.map(f => <FlightCard key={f.id} flight={f} color={color} />)}
     </div>
   )
@@ -82,7 +87,7 @@ function FlightCard({ flight: f, color }) {
   const airlineColor = AIRLINE_COLORS[f.airline] || '#6b7280'
 
   return (
-    <div style={{ background: isPending ? c.pendingBg : c.cardBg, borderRadius: 18, marginBottom: 12, border: isPending ? `1.5px dashed #f59e0b` : `1px solid ${c.border}`, boxShadow: '0 1px 6px rgba(0,0,0,0.04)', overflow: 'hidden' }}>
+    <div style={{ background: isPending ? c.pendingBg : c.cardBg, borderRadius: 18, marginBottom: 12, borderLeft: isPending ? `4px solid #f59e0b` : `4px solid ${color}`, boxShadow: '0 4px 20px rgba(0,0,0,0.10)', overflow: 'hidden' }}>
 
       {/* Aircraft photo */}
       {aircraftPhoto && !isPending && (
@@ -104,17 +109,17 @@ function FlightCard({ flight: f, color }) {
       <div style={{ padding: '16px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ background: isPending ? '#f59e0b' : airlineColor, borderRadius: 8, padding: '4px 10px' }}>
-              <span style={{ fontSize: 12, fontWeight: 800, color: 'white' }}>{isPending ? '? TE BOEKEN' : f.flightNr}</span>
+            <div style={{ background: isPending ? '#f59e0b' : airlineColor, borderRadius: 8, padding: '6px 14px' }}>
+              <span style={{ fontSize: 14, fontWeight: 800, color: 'white' }}>{isPending ? '? TE BOEKEN' : f.flightNr}</span>
             </div>
             {!aircraftPhoto && <span style={{ fontSize: 12, color: c.muted, fontWeight: 500 }}>{f.airline}</span>}
           </div>
           <span style={{ fontSize: 12, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>{new Date(f.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 12, background: `${color}08`, borderRadius: 12, padding: '14px 12px' }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.departure}</div>
+            <div style={{ fontSize: 32, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.departure}</div>
             <button onClick={() => fromCode && AIRPORT_MAPS[fromCode] && window.open(mapsSearch(AIRPORT_MAPS[fromCode]), '_blank')}
               style={{ fontSize: 13, color: fromCode && AIRPORT_MAPS[fromCode] ? color : c.muted, fontWeight: 600, background: 'none', border: 'none', padding: 0, cursor: fromCode && AIRPORT_MAPS[fromCode] ? 'pointer' : 'default', textDecoration: fromCode && AIRPORT_MAPS[fromCode] ? 'underline' : 'none', textAlign: 'left' }}>
               {f.from} {fromCode && AIRPORT_MAPS[fromCode] ? '📍' : ''}
@@ -130,7 +135,7 @@ function FlightCard({ flight: f, color }) {
             <div style={{ fontSize: 10, color, fontWeight: 700, marginTop: 4 }}>Non-stop</div>
           </div>
           <div style={{ flex: 1, textAlign: 'right' }}>
-            <div style={{ fontSize: 26, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.arrival}</div>
+            <div style={{ fontSize: 32, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.arrival}</div>
             <button onClick={() => toCode && AIRPORT_MAPS[toCode] && window.open(mapsSearch(AIRPORT_MAPS[toCode]), '_blank')}
               style={{ fontSize: 13, color: toCode && AIRPORT_MAPS[toCode] ? color : c.muted, fontWeight: 600, background: 'none', border: 'none', padding: 0, cursor: toCode && AIRPORT_MAPS[toCode] ? 'pointer' : 'default', textDecoration: toCode && AIRPORT_MAPS[toCode] ? 'underline' : 'none', textAlign: 'right' }}>
               {toCode && AIRPORT_MAPS[toCode] ? '📍 ' : ''}{f.to}

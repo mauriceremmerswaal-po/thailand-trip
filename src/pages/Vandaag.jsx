@@ -139,10 +139,18 @@ export default function Vandaag() {
           {displayDay.hotel && (
             <div style={{ background: c.cardBg, borderRadius: 14, padding: '12px 14px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10, border: `1px solid ${c.border}` }}>
               <span style={{ fontSize: 20 }}>🏨</span>
-              <div>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 11, color: c.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Verblijf</div>
                 <div style={{ fontSize: 14, fontWeight: 700, color: c.text }}>{displayDay.hotel}</div>
               </div>
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(displayDay.hotel)}`}
+                target="_blank" rel="noopener noreferrer"
+                title="Navigeer naar hotel"
+                style={{ width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 10, textDecoration: 'none', flexShrink: 0 }}
+              >
+                <img src={MAPS_ICON} width={18} height={18} alt="Maps" />
+              </a>
             </div>
           )}
 

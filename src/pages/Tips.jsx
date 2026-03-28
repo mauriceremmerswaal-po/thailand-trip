@@ -82,7 +82,7 @@ export default function Tips() {
             }}
           >
             <img src={MAPS_ICON} width={18} height={18} alt="" />
-            Restaurantlijst {activeCity}
+            Google Maps lijst {activeCity}
           </a>
         )}
         {/* TripAdvisor zoeken */}

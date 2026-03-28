@@ -55,11 +55,11 @@ function HotelCard({ hotel: h }) {
   const checkOutDate = new Date(h.checkOut)
 
   return (
-    <div style={{ background: c.cardBg, borderRadius: 18, marginBottom: 16, border: `1px solid ${c.border}`, overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+    <div style={{ background: c.cardBg, borderRadius: 18, marginBottom: 16, border: `1px solid ${c.border}`, borderTop: `3px solid ${color}`, overflow: 'hidden', boxShadow: '0 6px 24px rgba(0,0,0,0.10)' }}>
 
       {/* Hotel photo */}
       {photo && (
-        <div style={{ height: 160, overflow: 'hidden', position: 'relative' }}>
+        <div style={{ height: 190, overflow: 'hidden', position: 'relative' }}>
           <img
             src={photo}
             alt={h.name}
@@ -75,9 +75,9 @@ function HotelCard({ hotel: h }) {
       <div style={{ background: `${color}12`, padding: '18px 18px 14px', borderBottom: `1px solid ${c.border}`, display: 'flex', alignItems: 'flex-start', gap: 14 }}>
         <div style={{ width: 52, height: 52, borderRadius: 14, background: `${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>{emoji}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 16, fontWeight: 800, color: c.text, lineHeight: 1.2, marginBottom: 4 }}>{h.name}</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: c.text, lineHeight: 1.2, marginBottom: 4, letterSpacing: '-0.01em' }}>{h.name}</div>
           <a href={mapsSearch(h.mapsQuery || h.name)} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-            <div style={{ fontSize: 12, color: '#4285F4', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 3, marginBottom: 3 }}>
+            <div style={{ fontSize: 13, color: '#4285F4', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3, marginBottom: 3 }}>
               📍 <span style={{ textDecoration: 'underline' }}>{h.address || h.city}</span>
             </div>
           </a>
@@ -90,7 +90,7 @@ function HotelCard({ hotel: h }) {
         <div style={{ display: 'flex', alignItems: 'stretch' }}>
           <div style={{ flex: 1, paddingRight: 12 }}>
             <div style={{ fontSize: 10, color: c.muted, fontWeight: 800, letterSpacing: '0.07em', marginBottom: 4 }}>CHECK-IN</div>
-            <div style={{ fontSize: 20, fontWeight: 900, color: c.text, lineHeight: 1 }}>{checkInDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: c.text, lineHeight: 1 }}>{checkInDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</div>
             <div style={{ fontSize: 12, color: c.muted, marginTop: 2 }}>{checkInDate.toLocaleDateString('nl-NL', { weekday: 'long' })}</div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '0 12px' }}>
@@ -103,7 +103,7 @@ function HotelCard({ hotel: h }) {
           </div>
           <div style={{ flex: 1, paddingLeft: 12, borderLeft: `1px solid ${c.border}` }}>
             <div style={{ fontSize: 10, color: c.muted, fontWeight: 800, letterSpacing: '0.07em', marginBottom: 4 }}>CHECK-OUT</div>
-            <div style={{ fontSize: 20, fontWeight: 900, color: c.text, lineHeight: 1 }}>{checkOutDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: c.text, lineHeight: 1 }}>{checkOutDate.toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</div>
             <div style={{ fontSize: 12, color: c.muted, marginTop: 2 }}>{checkOutDate.toLocaleDateString('nl-NL', { weekday: 'long' })}</div>
           </div>
         </div>
@@ -125,16 +125,18 @@ function HotelCard({ hotel: h }) {
         </div>
       )}
 
-      <div style={{ padding: '12px 18px', display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+      <div style={{ padding: '12px 18px', display: 'flex', gap: 10, justifyContent: 'stretch' }}>
         <a href={mapsSearch(h.mapsQuery || h.name)} target="_blank" rel="noopener noreferrer"
           title="Google Maps"
-          style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#EBF3FE', borderRadius: 12, textDecoration: 'none' }}>
-          <img src={MAPS_ICON} width={22} height={22} alt="Maps" />
+          style={{ flex: 1, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#4285F4', color: 'white', borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 14 }}>
+          <img src={MAPS_ICON} width={20} height={20} alt="Maps" style={{ filter: 'brightness(0) invert(1)' }} />
+          Navigeer
         </a>
         <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(h.name)}`} target="_blank" rel="noopener noreferrer"
           title="TripAdvisor"
-          style={{ width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 12, textDecoration: 'none' }}>
-          <img src={TA_ICON} width={22} height={22} alt="TripAdvisor" />
+          style={{ flex: 1, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: '#00af87', color: 'white', borderRadius: 12, textDecoration: 'none', fontWeight: 700, fontSize: 14 }}>
+          <img src={TA_ICON} width={20} height={20} alt="TripAdvisor" style={{ filter: 'brightness(0) invert(1)' }} />
+          Restaurants
         </a>
       </div>
     </div>
