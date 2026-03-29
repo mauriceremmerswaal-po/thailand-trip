@@ -21,6 +21,7 @@ const AIRCRAFT_PHOTOS = {
 const AIRLINE_COLORS = {
   'Emirates': '#c8102e',
   'AirAsia': '#FF0000',
+  'VietJet Air': '#E40013',
   'Intern': '#10b981',
   'Nog te boeken': '#f59e0b',
 }

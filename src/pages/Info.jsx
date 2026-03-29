@@ -125,6 +125,45 @@ export default function Info() {
         </div>
       </Section>
 
+      {/* Sunrise & Sunset */}
+      <Section title="🌅 Zonsopgang & zonsondergang" c={c}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {[
+            { name: 'Bangkok', emoji: '🌆', color: '#f59e0b', rise: '06:08', set: '18:28' },
+            { name: 'Chiang Mai', emoji: '🏔️', color: '#10b981', rise: '06:04', set: '18:24' },
+            { name: 'Khao Lak', emoji: '🏖️', color: '#0ea5e9', rise: '06:12', set: '18:28' },
+          ].map(city => (
+            <div key={city.name} style={{ background: c.cardBg, borderRadius: 14, padding: '14px 16px', border: `1px solid ${c.border}`, display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: `${city.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>{city.emoji}</div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: c.text, marginBottom: 6 }}>{city.name}</div>
+                <div style={{ display: 'flex', gap: 16 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 16 }}>🌅</span>
+                    <div>
+                      <div style={{ fontSize: 10, color: c.muted, fontWeight: 600 }}>OPGANG</div>
+                      <div style={{ fontSize: 15, fontWeight: 800, color: '#f59e0b', fontVariantNumeric: 'tabular-nums' }}>{city.rise}</div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 16 }}>🌇</span>
+                    <div>
+                      <div style={{ fontSize: 10, color: c.muted, fontWeight: 600 }}>ONDERGANG</div>
+                      <div style={{ fontSize: 15, fontWeight: 800, color: '#6366f1', fontVariantNumeric: 'tabular-nums' }}>{city.set}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style={{ background: `${city.color}15`, borderRadius: 10, padding: '6px 10px', textAlign: 'center' }}>
+                <div style={{ fontSize: 11, color: c.muted, fontWeight: 600 }}>DAGLICHT</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: city.color }}>~12u</div>
+              </div>
+            </div>
+          ))}
+          <div style={{ fontSize: 11, color: c.muted, textAlign: 'center', marginTop: 2 }}>Tijden zijn lokale tijd (UTC+7) · geldig voor april 2026</div>
+        </div>
+      </Section>
+
       {/* EUR ↔ THB Calculator */}
       <Section title="💱 Wisselkoers EUR ↔ THB" c={c}>
         <div style={{ background: c.cardBg, borderRadius: 16, padding: '16px', border: `1px solid ${c.border}` }}>
