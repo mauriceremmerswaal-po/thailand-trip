@@ -62,8 +62,8 @@ export default function Kaart() {
   const [view, setView] = useState('thailand')
   const { daysUntil, tripStarted, tripEnded, tripDay } = getCountdown()
 
-  const center = view === 'thailand' ? [13.5, 100.5] : [25, 75]
-  const zoom = view === 'thailand' ? 6 : 4
+  const center = view === 'thailand' ? [12.5, 101.0] : [32, 55]
+  const zoom = view === 'thailand' ? 5 : 3
   const displayStops = view === 'thailand' ? THAILAND_STOPS : STOPS
   const route = view === 'thailand' ? THAILAND_ROUTE : FULL_ROUTE
 
