@@ -9,7 +9,14 @@ import {
 } from '../data/tripData.js'
 
 const STORAGE_KEY = 'thailand_trip_admin'
-const Ctx = createContext(null)
+const Ctx = createContext({
+  participants: ['Maurice', 'Claire', 'Ella'],
+  days: defaultDays,
+  saveParticipants: () => {},
+  saveDays: () => {},
+  resetLocalData: () => {},
+  CITY_COLORS, flights, hotels, sights,
+})
 
 export function TripDataProvider({ children }) {
   const [participants, setParticipants] = useState(defaultParticipants)
