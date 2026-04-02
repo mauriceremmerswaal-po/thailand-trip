@@ -8,6 +8,29 @@ import Modal from '../components/Modal.jsx'
 const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
 const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
 
+const WEATHER_CITIES = {
+  'Bangkok':     { lat: 13.7563, lon: 100.5018 },
+  'Chiang Mai':  { lat: 18.7883, lon: 98.9853 },
+  'Khao Lak':   { lat: 8.6256,  lon: 98.2895 },
+}
+
+function wmoEmoji(code) {
+  if (code === 0) return '☀️'
+  if (code <= 3) return '⛅'
+  if (code <= 48) return '🌫️'
+  if (code <= 55) return '🌦️'
+  if (code <= 65) return '🌧️'
+  if (code <= 82) return '🌦️'
+  return '⛈️'
+}
+
+function getWeatherCity(city) {
+  if (city.includes('Chiang Mai')) return 'Chiang Mai'
+  if (city.includes('Khao Lak')) return 'Khao Lak'
+  if (city.includes('Bangkok')) return 'Bangkok'
+  return null
+}
+
 function getCityColor(city) {
   if (city.includes('Bangkok')) return CITY_COLORS['Bangkok']
   if (city.includes('Chiang Mai')) return CITY_COLORS['Chiang Mai']
@@ -31,6 +54,7 @@ export default function Tijdlijn() {
   const c = useTheme()
   const { days } = useTripData()
   const todayRef = useRef(null)
+  const [weather, setWeather] = useState({})
 
   useEffect(() => {
     if (todayRef.current) {
@@ -38,6 +62,25 @@ export default function Tijdlijn() {
         todayRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }, 120)
     }
+  }, [])
+
+  useEffect(() => {
+    Object.entries(WEATHER_CITIES).forEach(([cityName, { lat, lon }]) => {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Asia%2FBangkok&start_date=2026-04-06&end_date=2026-04-24`)
+        .then(r => r.json())
+        .then(data => {
+          const lookup = {}
+          data.daily.time.forEach((date, i) => {
+            lookup[`${cityName}-${date}`] = {
+              max: Math.round(data.daily.temperature_2m_max[i]),
+              min: Math.round(data.daily.temperature_2m_min[i]),
+              code: data.daily.weathercode[i],
+            }
+          })
+          setWeather(prev => ({ ...prev, ...lookup }))
+        })
+        .catch(() => {})
+    })
   }, [])
 
   return (
@@ -72,6 +115,8 @@ export default function Tijdlijn() {
         const today = isToday(day.date)
         const past = isPast(day.date)
         const isLast = i === days.length - 1
+        const weatherCity = getWeatherCity(day.city)
+        const dayWeather = weatherCity ? weather[`${weatherCity}-${day.date}`] : null
 
         return (
           <div key={day.date} ref={today ? todayRef : null} style={{ display: 'flex', gap: 12 }}>
@@ -86,9 +131,16 @@ export default function Tijdlijn() {
                     {today && <span style={{ fontSize: 10, background: color, color: 'white', borderRadius: 6, padding: '2px 7px', fontWeight: 800 }}>VANDAAG</span>}
                     <span style={{ fontSize: 13, fontWeight: 700, color: past ? c.muted : c.text }}>{day.dayLabel}</span>
                   </div>
-                  <span style={{ fontSize: 12, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
-                    {new Date(day.date).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })}
-                  </span>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                    <span style={{ fontSize: 12, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
+                      {new Date(day.date).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })}
+                    </span>
+                    {dayWeather && (
+                      <span style={{ fontSize: 11, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
+                        {wmoEmoji(dayWeather.code)} {dayWeather.max}° / {dayWeather.min}°
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <div style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: `${color}18`, borderRadius: 20, padding: '3px 10px', marginBottom: 10 }}>
                   <div style={{ width: 6, height: 6, borderRadius: '50%', background: color }} />
@@ -138,6 +190,12 @@ function EventRow({ event: ev, color }) {
                 title="TripAdvisor"
                 style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 7, textDecoration: 'none', flexShrink: 0 }}>
                 <img src={TA_ICON} width={16} height={16} alt="TripAdvisor" />
+              </a>
+            )}
+            {ev.website && (
+              <a href={ev.website} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 3, background: c.chipBg, color: c.muted, borderRadius: 7, padding: '3px 8px', fontSize: 11, fontWeight: 700, textDecoration: 'none' }}>
+                🌐 Website
               </a>
             )}
             {ev.info && (

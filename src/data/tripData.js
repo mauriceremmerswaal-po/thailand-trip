@@ -223,6 +223,7 @@ export const days = [
     hotel: 'Grande Centre Point Surawong',
     events: [
       { time: '07:35', icon: '🛬', title: 'Aankomst Bangkok', sub: 'Suvarnabhumi Airport (BKK)', type: 'arrival', mapsQuery: 'Suvarnabhumi Airport Bangkok' },
+      { time: null, icon: '🚕', title: 'Transfer naar hotel', sub: 'BKK Airport → Surawong · ca. 45 min via Grab/taxi', type: 'transit' },
       { time: null, icon: '🏨', title: 'Inchecken hotel', sub: 'Grande Centre Point Surawong', type: 'hotel', mapsQuery: 'Grande Centre Point Surawong Bangkok', grab: true },
       { time: null, icon: '🗺️', title: 'Bezienswaardigheden', sub: 'Stad verkennen', type: 'activity' },
       { time: null, icon: '🍜', title: 'Vreten in Chinatown', sub: 'Yaowarat Road — beste streetfood', type: 'food', mapsQuery: 'Yaowarat Road Chinatown Bangkok' },
@@ -246,6 +247,8 @@ export const days = [
     events: [
       { time: null, icon: '☕', title: 'Relaxen & naar airport', sub: '', type: 'relax' },
       { time: '12:20', icon: '✈️', title: 'Vlucht FD4118 vertrekt', sub: 'Bangkok Suvarnabhumi (BKK) → Chiang Mai Intl (CNX) · AirAsia · 1u 20m', type: 'flight' },
+      { time: '13:40', icon: '🛬', title: 'Aankomst Chiang Mai', sub: 'Chiang Mai Intl Airport (CNX)', type: 'arrival', mapsQuery: 'Chiang Mai International Airport Thailand' },
+      { time: null, icon: '🚕', title: 'Transfer naar hotel', sub: 'CNX Airport → Smile Lanna Hotel · ca. 15-20 min', type: 'transit' },
       { time: null, icon: '🏨', title: 'Inchecken Smile Lanna Hotel', sub: 'Chiang Mai', type: 'hotel', mapsQuery: 'Smile Lanna Hotel Chiang Mai', grab: true },
       { time: null, icon: '🗺️', title: 'Stad verkennen', sub: 'Chiang Mai Oude Stad', type: 'activity', mapsQuery: 'Old City Chiang Mai, Thailand' },
     ],
@@ -288,8 +291,8 @@ export const days = [
     city: 'Chiang Mai',
     hotel: 'Smile Lanna Hotel',
     events: [
-      { time: null, icon: '🐘', title: 'Elephant Nature Park', sub: "\u2019s Ochtends gaan", type: 'activity', optional: true, mapsQuery: 'Elephant Nature Park Chiang Mai Thailand' },
-      { time: null, icon: '🛕', title: 'Bezienswaardigheden', sub: 'Tempels verkennen', type: 'activity', mapsQuery: 'Wat Chedi Luang Chiang Mai Thailand' },
+      { time: '08:00', icon: '🐘', title: 'Elephant Nature Park', sub: 'Dagbezoek ethisch sanctuary · olifanten wassen & voeren · ~฿2.500 pp', type: 'activity', mapsQuery: 'Elephant Nature Park Chiang Mai Thailand', website: 'https://www.elephantnaturepark.org' },
+      { time: null, icon: '🛕', title: 'Tempels verkennen', sub: 'Vrije avond · Wat Chedi Luang of Old City', type: 'activity', optional: true, mapsQuery: 'Wat Chedi Luang Chiang Mai Thailand' },
     ],
   },
   {
@@ -299,7 +302,8 @@ export const days = [
     hotel: 'Khao Lak',
     events: [
       { time: '10:55', icon: '✈️', title: 'Vlucht VZ414 vertrekt', sub: 'Chiang Mai Intl (CNX) → Phuket Intl (HKT) · VietJet Air · 2u 10m', type: 'flight', mapsQuery: 'Chiang Mai International Airport Thailand' },
-      { time: null, icon: '🚗', title: 'Transfer naar Khao Lak', sub: 'Ca. 1u 30m rijden van Phuket', type: 'transit', mapsQuery: 'Khao Lak Phang-nga Thailand', grab: true },
+      { time: '13:05', icon: '🛬', title: 'Aankomst Phuket', sub: 'Phuket Intl Airport (HKT)', type: 'arrival', mapsQuery: 'Phuket International Airport Thailand' },
+      { time: null, icon: '🚗', title: 'Transfer naar Khao Lak', sub: 'HKT Airport → JW Marriott · ca. 1u 30m via taxibus', type: 'transit', mapsQuery: 'Khao Lak Phang-nga Thailand' },
       { time: null, icon: '🏖️', title: 'Aankomst Khao Lak', sub: 'Inchecken hotel', type: 'hotel', mapsQuery: 'Khao Lak Phang-nga Thailand' },
     ],
   },
@@ -364,7 +368,8 @@ export const days = [
     hotel: 'Grande Centre Point Lumphini',
     events: [
       { time: '13:15', icon: '✈️', title: 'Vlucht FD3026 vertrekt', sub: 'Phuket (HKT) → Bangkok Don Mueang (DMK)', type: 'flight', mapsQuery: 'Phuket International Airport Thailand' },
-      { time: '14:45', icon: '🛬', title: 'Aankomst Bangkok Don Mueang', sub: 'Terminal 2 · transfer naar hotel', type: 'arrival', mapsQuery: 'Don Mueang International Airport Bangkok', grab: true },
+      { time: '14:45', icon: '🛬', title: 'Aankomst Bangkok Don Mueang', sub: 'Terminal 2 · Don Mueang Airport (DMK)', type: 'arrival', mapsQuery: 'Don Mueang International Airport Bangkok' },
+      { time: null, icon: '🚕', title: 'Transfer naar hotel', sub: 'Don Mueang → Lumphini · ca. 30-45 min via Grab/taxi', type: 'transit' },
       { time: null, icon: '🏨', title: 'Inchecken Grande Centre Point Lumphini', sub: '', type: 'hotel', mapsQuery: 'Grande Centre Point Lumphini Bangkok', grab: true },
       { time: null, icon: '🚢', title: 'Bangkok river cruise', sub: 'Zonsondergang cruise · Chao Phraya', type: 'activity', mapsQuery: 'Chao Phraya River Bangkok' },
     ],
