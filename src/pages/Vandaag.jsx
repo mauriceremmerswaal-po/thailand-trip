@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { days, CITY_COLORS } from '../data/tripData.js'
+import { CITY_COLORS } from '../data/tripData.js'
 import { mapsDirections, mapsSearch, HOME, SCHIPHOL } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
+import { useTripData } from '../context/TripDataContext.jsx'
 import Modal from '../components/Modal.jsx'
 
 const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
@@ -24,6 +25,7 @@ const TRIP_END = new Date('2026-04-24')
 
 export default function Vandaag() {
   const c = useTheme()
+  const { days } = useTripData()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
 

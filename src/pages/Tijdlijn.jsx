@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
-import { days, CITY_COLORS } from '../data/tripData.js'
+import { CITY_COLORS } from '../data/tripData.js'
 import { mapsSearch } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
+import { useTripData } from '../context/TripDataContext.jsx'
 import Modal from '../components/Modal.jsx'
 
 const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
@@ -28,6 +29,7 @@ function isPast(dateStr) {
 
 export default function Tijdlijn() {
   const c = useTheme()
+  const { days } = useTripData()
   const todayRef = useRef(null)
 
   useEffect(() => {
@@ -131,7 +133,7 @@ function EventRow({ event: ev, color }) {
                 <img src={MAPS_ICON} width={16} height={16} alt="Maps" />
               </a>
             )}
-            {ev.mapsQuery && (
+            {ev.mapsQuery && ['hotel', 'activity', 'food'].includes(ev.type) && (
               <a href={`https://www.tripadvisor.com/Search?q=${encodeURIComponent(ev.mapsQuery)}`} target="_blank" rel="noopener noreferrer"
                 title="TripAdvisor"
                 style={{ width: 28, height: 28, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e6f7f4', borderRadius: 7, textDecoration: 'none', flexShrink: 0 }}>

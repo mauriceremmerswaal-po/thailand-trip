@@ -1,3 +1,5 @@
+export const participants = ['Maurice', 'Claire', 'Ella']
+
 export const CITY_COLORS = {
   'Nederland': '#6b7280',
   'Bangkok': '#f59e0b',

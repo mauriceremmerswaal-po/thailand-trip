@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
+import { TripDataProvider } from './context/TripDataContext.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import TimeBar from './components/TimeBar.jsx'
 import Vandaag from './pages/Vandaag.jsx'
@@ -7,6 +8,7 @@ import Reis from './pages/Reis.jsx'
 import Tips from './pages/Tips.jsx'
 import Info from './pages/Info.jsx'
 import Kaart from './pages/Kaart.jsx'
+import Admin from './pages/Admin.jsx'
 
 const PAGE_TITLES = {
   kaart: 'Reiskaart',
@@ -18,6 +20,9 @@ const PAGE_TITLES = {
 
 function AppContent() {
   const [page, setPage] = useState('kaart')
+  const [showAdmin, setShowAdmin] = useState(false)
+  const tapCount = useRef(0)
+  const tapTimer = useRef(null)
   const c = useTheme()
 
   function changePage(newPage) {
@@ -25,8 +30,22 @@ function AppContent() {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }
 
+  function handleLogoTap() {
+    tapCount.current += 1
+    clearTimeout(tapTimer.current)
+    if (tapCount.current >= 5) {
+      tapCount.current = 0
+      setShowAdmin(true)
+      return
+    }
+    tapTimer.current = setTimeout(() => { tapCount.current = 0 }, 2000)
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: c.pageBg }}>
+      {/* Admin panel (full-screen overlay) */}
+      {showAdmin && <Admin onClose={() => setShowAdmin(false)} />}
+
       {/* Header */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
@@ -34,7 +53,8 @@ function AppContent() {
         padding: '10px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        <span style={{ fontSize: 20 }}>🇹🇭</span>
+        {/* Secret: tap 5x to open admin */}
+        <span style={{ fontSize: 20, cursor: 'default', userSelect: 'none' }} onClick={handleLogoTap}>🇹🇭</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: c.text, lineHeight: 1.1 }}>
             {PAGE_TITLES[page]}
@@ -44,11 +64,7 @@ function AppContent() {
         <TimeBar />
         <button
           onClick={c.toggleDark}
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer',
-            fontSize: 20, padding: '4px', lineHeight: 1,
-            opacity: 0.8,
-          }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, padding: '4px', lineHeight: 1, opacity: 0.8 }}
           title={c.isDark ? 'Lichte modus' : 'Donkere modus'}
         >
           {c.isDark ? '☀️' : '🌙'}
@@ -72,7 +88,9 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <TripDataProvider>
+        <AppContent />
+      </TripDataProvider>
     </ThemeProvider>
   )
 }

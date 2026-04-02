@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Polyline, Popup, useMap } from 'react-
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { mapsSearch } from '../utils/links.js'
+import { useTripData } from '../context/TripDataContext.jsx'
 
 // Fix default marker icons in Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -61,6 +62,10 @@ function getCountdown() {
 export default function Kaart() {
   const [view, setView] = useState('thailand')
   const { daysUntil, tripStarted, tripEnded, tripDay } = getCountdown()
+  const { participants } = useTripData()
+  const participantsLabel = participants.length <= 2
+    ? participants.join(' & ')
+    : participants.slice(0, -1).join(', ') + ' & ' + participants[participants.length - 1]
 
   const center = view === 'thailand' ? [12.5, 101.0] : [32, 55]
   const zoom = view === 'thailand' ? 5 : 3
@@ -78,7 +83,7 @@ export default function Kaart() {
       }}>
         <div style={{ position: 'absolute', right: -10, top: -10, fontSize: 80, opacity: 0.15, lineHeight: 1 }}>🇹🇭</div>
         <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4, fontWeight: 600, letterSpacing: '0.08em' }}>THAILAND 2026</div>
-        <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>Maurice & Claire</div>
+        <div style={{ fontSize: 22, fontWeight: 900, marginBottom: 4 }}>{participantsLabel}</div>
         <div style={{ fontSize: 13, opacity: 0.7 }}>6 apr – 24 apr · 19 dagen</div>
 
         {/* Stats row */}
