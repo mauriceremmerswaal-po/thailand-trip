@@ -16,10 +16,10 @@ L.Icon.Default.mergeOptions({
 const STOPS = [
   { id: 'ams', name: 'Amsterdam', sub: 'Vertrek · 6 april', lat: 52.3105, lng: 4.7683, color: '#6b7280', flag: '🇳🇱', days: null, mapsQuery: 'Amsterdam Airport Schiphol' },
   { id: 'dxb', name: 'Dubai', sub: 'Overstap · 6 april', lat: 25.2532, lng: 55.3657, color: '#94a3b8', flag: '🇦🇪', days: null, mapsQuery: 'Dubai International Airport' },
-  { id: 'bkk1', name: 'Bangkok', sub: '7–9 april · 2 nachten', lat: 13.7563, lng: 100.5018, color: '#f59e0b', flag: '🇹🇭', days: 2, hotel: 'Grande Centre Point Surawong', mapsQuery: 'Bangkok Thailand' },
-  { id: 'cnx', name: 'Chiang Mai', sub: '9–14 april · 5 nachten', lat: 18.7883, lng: 98.9853, color: '#10b981', flag: '🇹🇭', days: 5, hotel: 'Smile Lanna Hotel', mapsQuery: 'Chiang Mai Thailand' },
-  { id: 'kl', name: 'Khao Lak', sub: '14–21 april · 7 nachten', lat: 8.6256, lng: 98.2895, color: '#0ea5e9', flag: '🇹🇭', days: 7, hotel: 'JW Marriott Khao Lak Resort & Spa', mapsQuery: 'Khao Lak Thailand' },
-  { id: 'bkk2', name: 'Bangkok', sub: '21–23 april · 2 nachten', lat: 13.7863, lng: 100.5218, color: '#f59e0b', flag: '🇹🇭', days: 2, hotel: 'Grande Centre Point Lumphini', mapsQuery: 'Bangkok Thailand' },
+  { id: 'bkk1', name: 'Bangkok', sub: '7–9 april · 2 nachten', lat: 13.7563, lng: 100.5018, color: '#f59e0b', flag: '🇹🇭', days: 2, hotel: 'Grande Centre Point Surawong', mapsQuery: 'Bangkok Thailand', from: '2026-04-07', to: '2026-04-09' },
+  { id: 'cnx', name: 'Chiang Mai', sub: '9–14 april · 5 nachten', lat: 18.7883, lng: 98.9853, color: '#10b981', flag: '🇹🇭', days: 5, hotel: 'Smile Lanna Hotel', mapsQuery: 'Chiang Mai Thailand', from: '2026-04-09', to: '2026-04-14' },
+  { id: 'kl', name: 'Khao Lak', sub: '14–21 april · 7 nachten', lat: 8.6256, lng: 98.2895, color: '#0ea5e9', flag: '🇹🇭', days: 7, hotel: 'JW Marriott Khao Lak Resort & Spa', mapsQuery: 'Khao Lak Thailand', from: '2026-04-14', to: '2026-04-21' },
+  { id: 'bkk2', name: 'Bangkok', sub: '21–23 april · 2 nachten', lat: 13.7863, lng: 100.5218, color: '#f59e0b', flag: '🇹🇭', days: 2, hotel: 'Grande Centre Point Lumphini', mapsQuery: 'Bangkok Thailand', from: '2026-04-21', to: '2026-04-24' },
   { id: 'dxb2', name: 'Dubai', sub: 'Overstap · 24 april', lat: 25.2432, lng: 55.3757, color: '#94a3b8', flag: '🇦🇪', days: null, mapsQuery: 'Dubai International Airport' },
   { id: 'ams2', name: 'Amsterdam', sub: 'Aankomst · 24 april', lat: 52.3205, lng: 4.7583, color: '#6b7280', flag: '🇳🇱', days: null, mapsQuery: 'Amsterdam Airport Schiphol' },
 ]
@@ -59,6 +59,17 @@ function getCountdown() {
   return { daysUntil, tripStarted, tripEnded, tripDay }
 }
 
+function getCurrentStopId() {
+  const today = new Date(); today.setHours(0, 0, 0, 0)
+  const found = THAILAND_STOPS.find(s => {
+    if (!s.from) return false
+    const from = new Date(s.from); from.setHours(0, 0, 0, 0)
+    const to   = new Date(s.to);   to.setHours(0, 0, 0, 0)
+    return today >= from && today < to
+  })
+  return found?.id || null
+}
+
 export default function Kaart({ onCityClick }) {
   const [view, setView] = useState('thailand')
   const { daysUntil, tripStarted, tripEnded, tripDay } = getCountdown()
@@ -66,6 +77,7 @@ export default function Kaart({ onCityClick }) {
   const participantsLabel = participants.length <= 2
     ? participants.join(' & ')
     : participants.slice(0, -1).join(', ') + ' & ' + participants[participants.length - 1]
+  const currentStopId = getCurrentStopId()
 
   const center = view === 'thailand' ? [12.5, 101.0] : [32, 55]
   const zoom = view === 'thailand' ? 5 : 3
@@ -131,13 +143,20 @@ export default function Kaart({ onCityClick }) {
 
       {/* City stop cards */}
       <div style={{ fontSize: 13, fontWeight: 800, color: '#8c8279', marginBottom: 12, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Stops</div>
-      {THAILAND_STOPS.map((stop, i) => (
+      {THAILAND_STOPS.map((stop, i) => {
+        const isActive = stop.id === currentStopId
+        return (
         <button
           key={stop.id}
           onClick={() => onCityClick?.(stop.name)}
           style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer', marginBottom: 10 }}
         >
-          <div style={{ background: 'white', borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14, border: '1px solid #ede9e3', boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}>
+          <div style={{
+            background: isActive ? `${stop.color}12` : 'white',
+            borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14,
+            border: isActive ? `2px solid ${stop.color}` : '1px solid #ede9e3',
+            boxShadow: isActive ? `0 4px 16px ${stop.color}30` : '0 1px 6px rgba(0,0,0,0.04)',
+          }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: `${stop.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
               {['🌆', '🏔️', '🏖️', '🌆'][i]}
             </div>
@@ -156,7 +175,8 @@ export default function Kaart({ onCityClick }) {
             </div>
           </div>
         </button>
-      ))}
+        )
+      })}
 
       {/* View toggle */}
       <div style={{ display: 'flex', background: '#ede9e3', borderRadius: 12, padding: 4, marginBottom: 14 }}>
