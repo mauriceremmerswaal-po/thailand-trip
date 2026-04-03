@@ -46,10 +46,13 @@ function AppContent() {
       {/* Admin panel (full-screen overlay) */}
       {showAdmin && <Admin onClose={() => setShowAdmin(false)} />}
 
-      {/* Header */}
+      {/* Header — Liquid Glass */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 50,
-        background: c.cardBg, borderBottom: `1px solid ${c.border}`,
+        background: c.isDark ? 'rgba(18,18,20,0.78)' : 'rgba(242,242,247,0.78)',
+        backdropFilter: 'blur(28px) saturate(1.8)',
+        WebkitBackdropFilter: 'blur(28px) saturate(1.8)',
+        borderBottom: `0.5px solid ${c.isDark ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.12)'}`,
         padding: '10px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
