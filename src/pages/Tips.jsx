@@ -14,12 +14,29 @@ const RESTAURANT_LISTS = {
   'Khao Lak':   null, // volgt nog
 }
 
+const CITY_DATES = [
+  { city: 'Bangkok',    from: '2026-04-07', to: '2026-04-09' },
+  { city: 'Chiang Mai', from: '2026-04-09', to: '2026-04-14' },
+  { city: 'Khao Lak',   from: '2026-04-14', to: '2026-04-21' },
+  { city: 'Bangkok',    from: '2026-04-21', to: '2026-04-24' },
+]
+
+function getCurrentCity() {
+  const today = new Date(); today.setHours(0, 0, 0, 0)
+  const found = CITY_DATES.find(({ from, to }) => {
+    const f = new Date(from); f.setHours(0, 0, 0, 0)
+    const t = new Date(to);   t.setHours(0, 0, 0, 0)
+    return today >= f && today < t
+  })
+  return found?.city || 'Bangkok'
+}
+
 export default function Tips() {
   const c = useTheme()
   const [checked, setChecked] = useState(() => {
     try { return JSON.parse(localStorage.getItem('thailand_checked') || '{}') } catch { return {} }
   })
-  const [activeCity, setActiveCity] = useState('Bangkok')
+  const [activeCity, setActiveCity] = useState(getCurrentCity)
   const [modal, setModal] = useState(null)
 
   function toggle(id) {

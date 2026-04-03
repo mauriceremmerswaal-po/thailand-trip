@@ -51,7 +51,9 @@ export default function Vandaag() {
   const { days } = useTripData()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  const [weather, setWeather] = useState({})
+  const [weather, setWeather] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('thailand_weather_cache') || '{}') } catch { return {} }
+  })
 
   useEffect(() => {
     const maxEnd = new Date(Math.min(new Date('2026-04-24'), new Date(Date.now() + 15 * 864e5)))
@@ -68,7 +70,11 @@ export default function Vandaag() {
               code: data.daily.weathercode[i],
             }
           })
-          setWeather(prev => ({ ...prev, ...lookup }))
+          setWeather(prev => {
+            const next = { ...prev, ...lookup }
+            try { localStorage.setItem('thailand_weather_cache', JSON.stringify(next)) } catch {}
+            return next
+          })
         }).catch(() => {})
     })
   }, [])
@@ -192,7 +198,12 @@ export default function Vandaag() {
                     <span style={{ fontSize: 11, color: c.muted }}>{w.min}°</span>
                   </div>
                 </div>
-              ) : null
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: `${cityColor}14`, borderRadius: 12, padding: '6px 10px' }}>
+                  <span style={{ fontSize: 16 }}>🌡️</span>
+                  <span style={{ fontSize: 11, color: c.muted, fontWeight: 600 }}>Geen data</span>
+                </div>
+              )
             })()}
           </div>
           <div style={{ fontSize: 12, color: c.muted, marginBottom: 12 }}>{formatDate(displayDay.date)}</div>
