@@ -59,7 +59,7 @@ function getCountdown() {
   return { daysUntil, tripStarted, tripEnded, tripDay }
 }
 
-export default function Kaart() {
+export default function Kaart({ onCityClick }) {
   const [view, setView] = useState('thailand')
   const { daysUntil, tripStarted, tripEnded, tripDay } = getCountdown()
   const { participants } = useTripData()
@@ -132,8 +132,12 @@ export default function Kaart() {
       {/* City stop cards */}
       <div style={{ fontSize: 13, fontWeight: 800, color: '#8c8279', marginBottom: 12, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Stops</div>
       {THAILAND_STOPS.map((stop, i) => (
-        <a key={stop.id} href={mapsSearch(stop.mapsQuery)} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-          <div style={{ background: 'white', borderRadius: 14, padding: '14px 16px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 14, border: '1px solid #ede9e3', boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}>
+        <button
+          key={stop.id}
+          onClick={() => onCityClick?.(stop.name)}
+          style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer', marginBottom: 10 }}
+        >
+          <div style={{ background: 'white', borderRadius: 14, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14, border: '1px solid #ede9e3', boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: `${stop.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
               {['🌆', '🏔️', '🏖️', '🌆'][i]}
             </div>
@@ -142,16 +146,16 @@ export default function Kaart() {
               <div style={{ fontSize: 12, color: '#8c8279' }}>{stop.sub}</div>
               {stop.hotel && <div style={{ fontSize: 11, color: '#aaa', marginTop: 2 }}>🏨 {stop.hotel}</div>}
             </div>
-            <div style={{ textAlign: 'right', flexShrink: 0 }}>
+            <div style={{ textAlign: 'right', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 5 }}>
               {stop.days && (
                 <div style={{ background: `${stop.color}20`, color: stop.color, borderRadius: 20, padding: '4px 10px', fontSize: 12, fontWeight: 800 }}>
                   {stop.days}n
                 </div>
               )}
-              <div style={{ fontSize: 11, color: '#ccc', marginTop: 4 }}>📍</div>
+              <div style={{ fontSize: 10, color: stop.color, fontWeight: 700, opacity: 0.8 }}>Schema →</div>
             </div>
           </div>
-        </a>
+        </button>
       ))}
 
       {/* View toggle */}

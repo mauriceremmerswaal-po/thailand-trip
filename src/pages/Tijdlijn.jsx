@@ -50,10 +50,11 @@ function isPast(dateStr) {
   return d < t
 }
 
-export default function Tijdlijn() {
+export default function Tijdlijn({ scrollCity, clearScrollCity }) {
   const c = useTheme()
   const { days } = useTripData()
   const todayRef = useRef(null)
+  const cityFirstRef = useRef({})
   const [weather, setWeather] = useState({})
 
   useEffect(() => {
@@ -63,6 +64,16 @@ export default function Tijdlijn() {
       }, 120)
     }
   }, [])
+
+  useEffect(() => {
+    if (scrollCity) {
+      setTimeout(() => {
+        const el = cityFirstRef.current[scrollCity]
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        clearScrollCity?.()
+      }, 180)
+    }
+  }, [scrollCity])
 
   useEffect(() => {
     Object.entries(WEATHER_CITIES).forEach(([cityName, { lat, lon }]) => {
@@ -112,16 +123,23 @@ export default function Tijdlijn() {
         ))}
       </div>
 
-      {days.map((day, i) => {
+      {(() => {
+        const cityFirstSeen = {}
+        return days.map((day, i) => {
         const color = getCityColor(day.city)
         const today = isToday(day.date)
         const past = isPast(day.date)
         const isLast = i === days.length - 1
         const weatherCity = getWeatherCity(day.city)
         const dayWeather = weatherCity ? weather[`${weatherCity}-${day.date}`] : null
+        const isFirstOfCity = !cityFirstSeen[day.city]
+        if (isFirstOfCity) cityFirstSeen[day.city] = true
 
         return (
-          <div key={day.date} ref={today ? todayRef : null} style={{ display: 'flex', gap: 12 }}>
+          <div key={day.date} ref={el => {
+            if (today) todayRef.current = el
+            if (isFirstOfCity) cityFirstRef.current[day.city] = el
+          }} style={{ display: 'flex', gap: 12 }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: 28, flexShrink: 0 }}>
               <div style={{ width: today ? 22 : 14, height: today ? 22 : 14, borderRadius: '50%', background: past ? (c.isDark ? '#3d3d3d' : '#d4cfc9') : color, border: today ? `3px solid ${color}` : 'none', outline: today ? `3px solid ${color}33` : 'none', flexShrink: 0, marginTop: 14, zIndex: 1 }} />
               {!isLast && <div style={{ width: 2, flex: 1, minHeight: 16, background: past ? (c.isDark ? '#2d2d2d' : '#e8e3de') : `${color}33`, marginTop: 4 }} />}
@@ -160,7 +178,8 @@ export default function Tijdlijn() {
             </div>
           </div>
         )
-      })}
+      })
+    })()}
     </div>
   )
 }

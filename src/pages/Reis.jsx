@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTheme } from '../context/ThemeContext.jsx'
 import Tijdlijn from './Tijdlijn.jsx'
 import Vluchten from './Vluchten.jsx'
@@ -10,9 +10,13 @@ const TABS = [
   { id: 'hotels', icon: '🏨', label: 'Hotels' },
 ]
 
-export default function Reis() {
+export default function Reis({ scrollCity, clearScrollCity }) {
   const c = useTheme()
   const [tab, setTab] = useState('schema')
+
+  useEffect(() => {
+    if (scrollCity) setTab('schema')
+  }, [scrollCity])
 
   return (
     <div style={{ minHeight: '100vh', background: c.pageBg }}>
@@ -41,7 +45,7 @@ export default function Reis() {
         ))}
       </div>
 
-      {tab === 'schema' && <Tijdlijn />}
+      {tab === 'schema' && <Tijdlijn scrollCity={scrollCity} clearScrollCity={clearScrollCity} />}
       {tab === 'vluchten' && <Vluchten />}
       {tab === 'hotels' && <Hotels />}
     </div>

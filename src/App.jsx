@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
 import { TripDataProvider } from './context/TripDataContext.jsx'
 import BottomNav from './components/BottomNav.jsx'
@@ -21,6 +21,7 @@ const PAGE_TITLES = {
 function AppContent() {
   const [page, setPage] = useState('kaart')
   const [showAdmin, setShowAdmin] = useState(false)
+  const [scrollCity, setScrollCity] = useState(null)
   const tapCount = useRef(0)
   const tapTimer = useRef(null)
   const c = useTheme()
@@ -28,6 +29,11 @@ function AppContent() {
   function changePage(newPage) {
     setPage(newPage)
     window.scrollTo({ top: 0, behavior: 'instant' })
+  }
+
+  function handleCityClick(cityName) {
+    setScrollCity(cityName)
+    changePage('reis')
   }
 
   function handleLogoTap() {
@@ -76,10 +82,10 @@ function AppContent() {
 
       {/* Page content */}
       <main>
-        {page === 'kaart' && <Kaart />}
+        {page === 'kaart' && <Kaart onCityClick={handleCityClick} />}
         {page === 'vandaag' && <Vandaag />}
         {page === 'tips' && <Tips />}
-        {page === 'reis' && <Reis />}
+        {page === 'reis' && <Reis scrollCity={scrollCity} clearScrollCity={() => setScrollCity(null)} />}
         {page === 'info' && <Info />}
       </main>
 
