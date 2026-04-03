@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ThemeProvider, useTheme } from './context/ThemeContext.jsx'
 import { TripDataProvider } from './context/TripDataContext.jsx'
 import BottomNav from './components/BottomNav.jsx'
@@ -10,6 +10,8 @@ import Info from './pages/Info.jsx'
 import Kaart from './pages/Kaart.jsx'
 import Admin from './pages/Admin.jsx'
 
+const VALID_PAGES = ['kaart', 'vandaag', 'tips', 'reis', 'info']
+
 const PAGE_TITLES = {
   kaart: 'Reiskaart',
   vandaag: 'Thailand 2026 ✈️',
@@ -18,17 +20,32 @@ const PAGE_TITLES = {
   info: 'Info & Handig',
 }
 
+function getPageFromHash() {
+  const hash = window.location.hash.replace(/^#\/?/, '')
+  return VALID_PAGES.includes(hash) ? hash : 'kaart'
+}
+
 function AppContent() {
-  const [page, setPage] = useState('kaart')
+  const [page, setPage] = useState(getPageFromHash)
   const [showAdmin, setShowAdmin] = useState(false)
   const [scrollCity, setScrollCity] = useState(null)
   const tapCount = useRef(0)
   const tapTimer = useRef(null)
   const c = useTheme()
 
+  // Sync URL → state when user navigates back/forward
+  useEffect(() => {
+    function onHashChange() {
+      setPage(getPageFromHash())
+      window.scrollTo({ top: 0, behavior: 'instant' })
+    }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
+  }, [])
+
   function changePage(newPage) {
-    setPage(newPage)
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.location.hash = `/${newPage}`
+    // state updates via hashchange listener above
   }
 
   function handleCityClick(cityName) {
@@ -49,7 +66,6 @@ function AppContent() {
 
   return (
     <div style={{ minHeight: '100vh', background: c.pageBg }}>
-      {/* Admin panel (full-screen overlay) */}
       {showAdmin && <Admin onClose={() => setShowAdmin(false)} />}
 
       {/* Header — Liquid Glass */}
@@ -62,7 +78,6 @@ function AppContent() {
         padding: '10px 16px',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
-        {/* Secret: tap 5x to open admin */}
         <span style={{ fontSize: 20, cursor: 'default', userSelect: 'none' }} onClick={handleLogoTap}>🇹🇭</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 15, fontWeight: 800, color: c.text, lineHeight: 1.1 }}>
@@ -80,13 +95,12 @@ function AppContent() {
         </button>
       </div>
 
-      {/* Page content */}
       <main>
-        {page === 'kaart' && <Kaart onCityClick={handleCityClick} />}
+        {page === 'kaart'   && <Kaart onCityClick={handleCityClick} />}
         {page === 'vandaag' && <Vandaag />}
-        {page === 'tips' && <Tips />}
-        {page === 'reis' && <Reis scrollCity={scrollCity} clearScrollCity={() => setScrollCity(null)} />}
-        {page === 'info' && <Info />}
+        {page === 'tips'    && <Tips />}
+        {page === 'reis'    && <Reis scrollCity={scrollCity} clearScrollCity={() => setScrollCity(null)} />}
+        {page === 'info'    && <Info />}
       </main>
 
       <BottomNav page={page} setPage={changePage} />
