@@ -1,9 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CITY_COLORS } from '../data/tripData.js'
 import { mapsDirections, mapsSearch, HOME, SCHIPHOL } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { useTripData } from '../context/TripDataContext.jsx'
 import Modal from '../components/Modal.jsx'
+
+const WEATHER_COORDS = {
+  'Bangkok':    { lat: 13.7563, lon: 100.5018 },
+  'Chiang Mai': { lat: 18.7883, lon: 98.9853 },
+  'Khao Lak':   { lat: 8.6256,  lon: 98.2895 },
+}
+
+function wmoEmoji(code) {
+  if (code === 0) return '☀️'
+  if (code <= 3) return '⛅'
+  if (code <= 48) return '🌫️'
+  if (code <= 55) return '🌦️'
+  if (code <= 65) return '🌧️'
+  if (code <= 82) return '🌦️'
+  return '⛈️'
+}
+
+function getWeatherCity(city) {
+  if (city.includes('Chiang Mai')) return 'Chiang Mai'
+  if (city.includes('Khao Lak')) return 'Khao Lak'
+  if (city.includes('Bangkok')) return 'Bangkok'
+  return null
+}
 
 const MAPS_ICON = 'https://www.google.com/s2/favicons?domain=maps.google.com&sz=64'
 const TA_ICON = 'https://www.google.com/s2/favicons?domain=tripadvisor.com&sz=64'
@@ -28,6 +51,25 @@ export default function Vandaag() {
   const { days } = useTripData()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
+  const [weather, setWeather] = useState({})
+
+  useEffect(() => {
+    Object.entries(WEATHER_COORDS).forEach(([cityName, { lat, lon }]) => {
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Asia%2FBangkok&start_date=2026-04-06&end_date=2026-04-24`)
+        .then(r => r.json())
+        .then(data => {
+          const lookup = {}
+          data.daily.time.forEach((date, i) => {
+            lookup[`${cityName}-${date}`] = {
+              max: Math.round(data.daily.temperature_2m_max[i]),
+              min: Math.round(data.daily.temperature_2m_min[i]),
+              code: data.daily.weathercode[i],
+            }
+          })
+          setWeather(prev => ({ ...prev, ...lookup }))
+        }).catch(() => {})
+    })
+  }, [])
 
   const tripStarted = today >= TRIP_START
   const tripEnded = today > TRIP_END
@@ -130,11 +172,26 @@ export default function Vandaag() {
       {/* Today / Next day */}
       {displayDay && (
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-            <div style={{ background: cityColor, color: 'white', borderRadius: 10, padding: '4px 12px', fontSize: 13, fontWeight: 700 }}>
-              {displayDay.dayLabel}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ background: cityColor, color: 'white', borderRadius: 10, padding: '4px 12px', fontSize: 13, fontWeight: 700 }}>
+                {displayDay.dayLabel}
+              </div>
+              <div style={{ fontSize: 14, color: c.muted, fontWeight: 500 }}>{displayDay.city}</div>
             </div>
-            <div style={{ fontSize: 14, color: c.muted, fontWeight: 500 }}>{displayDay.city}</div>
+            {(() => {
+              const wCity = getWeatherCity(displayDay.city)
+              const w = wCity ? weather[`${wCity}-${displayDay.date}`] : null
+              return w ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: `${cityColor}14`, borderRadius: 12, padding: '6px 12px' }}>
+                  <span style={{ fontSize: 22, lineHeight: 1 }}>{wmoEmoji(w.code)}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+                    <span style={{ fontSize: 14, fontWeight: 800, color: c.text }}>{w.max}°</span>
+                    <span style={{ fontSize: 11, color: c.muted }}>{w.min}°</span>
+                  </div>
+                </div>
+              ) : null
+            })()}
           </div>
           <div style={{ fontSize: 12, color: c.muted, marginBottom: 12 }}>{formatDate(displayDay.date)}</div>
 
@@ -175,6 +232,8 @@ export default function Vandaag() {
             {upcoming.map((d, i) => {
               const color = getCityColor(d.city)
               const diff = Math.round((new Date(d.date) - today) / (1000 * 60 * 60 * 24))
+              const wCity = getWeatherCity(d.city)
+              const w = wCity ? weather[`${wCity}-${d.date}`] : null
               return (
                 <div key={i} style={{ background: c.cardBg, borderRadius: 14, padding: '12px 14px', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 12, border: `1px solid ${c.border}` }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -184,9 +243,19 @@ export default function Vandaag() {
                     <div style={{ fontSize: 13, fontWeight: 700, color: c.text }}>{d.dayLabel} · {d.city}</div>
                     <div style={{ fontSize: 12, color: c.muted }}>{diff === 1 ? 'Morgen' : `Over ${diff} dagen`}</div>
                   </div>
-                  <div style={{ fontSize: 12, color, fontWeight: 800 }}>
-                    {new Date(d.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
-                  </div>
+                  {w ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, flexShrink: 0 }}>
+                      <span style={{ fontSize: 20 }}>{wmoEmoji(w.code)}</span>
+                      <div style={{ textAlign: 'right' }}>
+                        <div style={{ fontSize: 13, fontWeight: 800, color: c.text }}>{w.max}°</div>
+                        <div style={{ fontSize: 11, color: c.muted }}>{w.min}°</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ fontSize: 12, color, fontWeight: 800 }}>
+                      {new Date(d.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -200,6 +269,8 @@ export default function Vandaag() {
           <div style={{ fontSize: 11, fontWeight: 800, color: c.muted, marginBottom: 12, letterSpacing: '0.07em', textTransform: 'uppercase' }}>Eerste dagen</div>
           {days.slice(0, 3).map((d, i) => {
             const color = getCityColor(d.city)
+            const wCity = getWeatherCity(d.city)
+            const w = wCity ? weather[`${wCity}-${d.date}`] : null
             return (
               <div key={i} style={{ background: c.cardBg, borderRadius: 14, padding: '12px 14px', marginBottom: 8, border: `1px solid ${c.border}` }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -207,7 +278,15 @@ export default function Vandaag() {
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: color }} />
                     <span style={{ fontSize: 13, fontWeight: 700, color: c.text }}>{d.dayLabel} · {d.city}</span>
                   </div>
-                  <span style={{ fontSize: 12, color: c.muted }}>{new Date(d.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</span>
+                  {w ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                      <span style={{ fontSize: 16 }}>{wmoEmoji(w.code)}</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: c.text }}>{w.max}°</span>
+                      <span style={{ fontSize: 11, color: c.muted }}>/ {w.min}°</span>
+                    </div>
+                  ) : (
+                    <span style={{ fontSize: 12, color: c.muted }}>{new Date(d.date).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}</span>
+                  )}
                 </div>
                 {d.events.map((ev, j) => (
                   <div key={j} style={{ display: 'flex', gap: 8, paddingLeft: 16, marginBottom: 4 }}>

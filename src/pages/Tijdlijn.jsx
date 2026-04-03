@@ -131,14 +131,18 @@ export default function Tijdlijn() {
                     {today && <span style={{ fontSize: 10, background: color, color: 'white', borderRadius: 6, padding: '2px 7px', fontWeight: 800 }}>VANDAAG</span>}
                     <span style={{ fontSize: 13, fontWeight: 700, color: past ? c.muted : c.text }}>{day.dayLabel}</span>
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 2 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
                     <span style={{ fontSize: 12, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
                       {new Date(day.date).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' })}
                     </span>
                     {dayWeather && (
-                      <span style={{ fontSize: 11, color: c.muted, fontVariantNumeric: 'tabular-nums' }}>
-                        {wmoEmoji(dayWeather.code)} {dayWeather.max}° / {dayWeather.min}°
-                      </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: `${color}12`, borderRadius: 10, padding: '4px 8px' }}>
+                        <span style={{ fontSize: 18, lineHeight: 1 }}>{wmoEmoji(dayWeather.code)}</span>
+                        <div style={{ lineHeight: 1.1 }}>
+                          <div style={{ fontSize: 13, fontWeight: 800, color: c.text }}>{dayWeather.max}°</div>
+                          <div style={{ fontSize: 10, color: c.muted }}>{dayWeather.min}°</div>
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
