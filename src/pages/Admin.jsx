@@ -3,7 +3,7 @@ import { useTripData } from '../context/TripDataContext.jsx'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { sights, CITY_COLORS, flights as staticFlights, hotels as staticHotels } from '../data/tripData.js'
 
-const ADMIN_PIN = '2026'
+const ADMIN_PIN = '3355'
 const TOKEN_KEY = 'thailand_admin_token'
 const GITHUB_OWNER = 'mauriceremmerswaal-po'
 const GITHUB_REPO = 'thailand-trip'
