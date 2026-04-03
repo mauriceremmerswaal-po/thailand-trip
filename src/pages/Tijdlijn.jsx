@@ -66,7 +66,9 @@ export default function Tijdlijn() {
 
   useEffect(() => {
     Object.entries(WEATHER_CITIES).forEach(([cityName, { lat, lon }]) => {
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Asia%2FBangkok&start_date=2026-04-06&end_date=2026-04-24`)
+      const maxEnd = new Date(Math.min(new Date('2026-04-24'), new Date(Date.now() + 15 * 864e5)))
+      const endDate = maxEnd.toISOString().slice(0, 10)
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=Asia%2FBangkok&start_date=2026-04-06&end_date=${endDate}`)
         .then(r => r.json())
         .then(data => {
           const lookup = {}
