@@ -73,7 +73,7 @@ export default function Kaart() {
   const route = view === 'thailand' ? THAILAND_ROUTE : FULL_ROUTE
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px' }}>
+    <div className="fade-in" style={{ padding: '16px 16px 120px' }}>
 
       {/* Polarsteps-style trip header */}
       <div style={{

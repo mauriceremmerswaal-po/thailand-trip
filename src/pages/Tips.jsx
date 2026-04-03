@@ -34,7 +34,7 @@ export default function Tips() {
   const totalSights = cities.reduce((sum, ct) => sum + sights[ct].length, 0)
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
+    <div className="fade-in" style={{ padding: '16px 16px 120px', background: c.pageBg, minHeight: '100vh' }}>
       {modal && (
         <Modal
           title={modal.name}

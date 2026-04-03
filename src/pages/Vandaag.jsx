@@ -96,7 +96,7 @@ export default function Vandaag() {
   const cityColor = displayDay ? getCityColor(displayDay.city) : '#6b7280'
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
+    <div className="fade-in" style={{ padding: '16px 16px 120px', background: c.pageBg, minHeight: '100vh' }}>
 
       {/* Polarsteps dark header */}
       <div style={{

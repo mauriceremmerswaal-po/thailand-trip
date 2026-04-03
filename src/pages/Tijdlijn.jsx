@@ -86,7 +86,7 @@ export default function Tijdlijn() {
   }, [])
 
   return (
-    <div className="fade-in" style={{ padding: '16px 16px 100px', background: c.pageBg, minHeight: '100vh' }}>
+    <div className="fade-in" style={{ padding: '16px 16px 120px', background: c.pageBg, minHeight: '100vh' }}>
 
       <div style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%)', borderRadius: 20, padding: '20px', marginBottom: 16, color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', right: -10, top: -10, fontSize: 80, opacity: 0.15, lineHeight: 1 }}>🗓️</div>

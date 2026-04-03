@@ -1,4 +1,15 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect, useRef } from 'react'
+
+// Thailand sunrise ≈ 06:05, sunset ≈ 18:25 (UTC+7)
+const SUNRISE_MIN = 6 * 60 + 5   // 365 minutes
+const SUNSET_MIN  = 18 * 60 + 25  // 1105 minutes
+
+function isNightInThailand() {
+  // Thai time = UTC + 7h
+  const now = new Date()
+  const thaiMinutes = ((now.getUTCHours() * 60 + now.getUTCMinutes()) + 7 * 60) % (24 * 60)
+  return thaiMinutes < SUNRISE_MIN || thaiMinutes >= SUNSET_MIN
+}
 
 const LIGHT = {
   pageBg: '#f5f2ee',
@@ -39,17 +50,26 @@ const DARK = {
 const ThemeContext = createContext({ ...LIGHT, toggleDark: () => {} })
 
 export function ThemeProvider({ children }) {
-  const [dark, setDark] = useState(() => {
-    try { return localStorage.getItem('darkMode') === 'true' } catch { return false }
-  })
+  // Start auto: dark if it's night in Thailand, manual override possible
+  const [dark, setDark] = useState(isNightInThailand)
+  const manualOverride = useRef(false)
 
-  const theme = dark ? DARK : LIGHT
+  // Auto-update every 60s — switches at sunrise/sunset unless manually overridden
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!manualOverride.current) {
+        setDark(isNightInThailand())
+      }
+    }, 60_000)
+    return () => clearInterval(id)
+  }, [])
 
   function toggleDark() {
-    const next = !dark
-    setDark(next)
-    try { localStorage.setItem('darkMode', next) } catch {}
+    manualOverride.current = true
+    setDark(d => !d)
   }
+
+  const theme = dark ? DARK : LIGHT
 
   return (
     <ThemeContext.Provider value={{ ...theme, toggleDark }}>
