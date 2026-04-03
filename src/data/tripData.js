@@ -291,7 +291,7 @@ export const days = [
     city: 'Chiang Mai',
     hotel: 'Smile Lanna Hotel',
     events: [
-      { time: '08:00', icon: '🐘', title: 'Elephant Nature Park', sub: 'Dagbezoek ethisch sanctuary · olifanten wassen & voeren · ~฿2.500 pp', type: 'activity', mapsQuery: 'Elephant Nature Park Chiang Mai Thailand', website: 'https://www.elephantnaturepark.org' },
+      { time: '08:00', icon: '🐘', title: 'Elephant Nature Park', sub: 'Half Day Morning Visit · Boeking #28137 · 2 volw. + 1 kind · Hotelpickup Smile Lanna · ฿6.250 totaal (฿1.875 aanbetaald, ฿4.375 nog te betalen)', type: 'activity', mapsQuery: 'Elephant Nature Park Chiang Mai Thailand', website: 'https://www.elephantnaturepark.org' },
       { time: null, icon: '🛕', title: 'Tempels verkennen', sub: 'Vrije avond · Wat Chedi Luang of Old City', type: 'activity', optional: true, mapsQuery: 'Wat Chedi Luang Chiang Mai Thailand' },
     ],
   },
