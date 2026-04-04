@@ -181,30 +181,35 @@ export const dishes = {
   Bangkok: [
     {
       id: 'bkk-d1', name: 'Pad Thai', emoji: '🍜',
+      img: 'https://images.unsplash.com/photo-1559314809-0d155014e29e?w=600&q=80',
       desc: 'Hét nationale gerecht van Thailand. Roergebakken rijstnoedels met garnalen of kip, ei, taugé en bosui, geserveerd met pinda\'s en limoen.',
       smaak: 'Licht zoet-zout-zuur, mild van smaak',
       tip: 'Beste bij: straatkraampjes rond Khao San Road of Chinatown. Vraag om "mai pet" (niet pittig) als je het zeker wil.',
     },
     {
       id: 'bkk-d2', name: 'Khao Man Gai', emoji: '🍗',
+      img: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=600&q=80',
       desc: 'Zachte gestoomde kip op rijst die is gekookt in kippenbouillon, met een lichte gember-knoflooksaus ernaast. Simpel maar heerlijk.',
       smaak: 'Zacht, mild, hartig',
       tip: 'Goed ontbijtgerecht. Te vinden bij lokale food courts en marktjes. Goedkoop (~฿50).',
     },
     {
       id: 'bkk-d3', name: 'Massaman Curry', emoji: '🍛',
+      img: 'https://images.unsplash.com/photo-1455619452474-d2be8182e7f0?w=600&q=80',
       desc: 'Rijke, milde curry met aardappel, ui, kokosmelk en pinda\'s. Geïnspireerd door Perzische smaken, geen typisch pittig Thais gerecht.',
       smaak: 'Mild, licht zoet, romig',
       tip: 'Ideaal als je niet zo van pittig houdt. In vrijwel elk restaurant te vinden.',
     },
     {
       id: 'bkk-d4', name: 'Mango Sticky Rice', emoji: '🥭',
+      img: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=600&q=80',
       desc: 'Kleverige rijst met warme kokossaus en verse mango. Populair dessert dat je bij straatkraampjes vindt, vooral als mango\'s in seizoen zijn (april = perfect!)',
       smaak: 'Zoet, romig, fris',
       tip: 'April is mangoseizoen — perfecte timing! Te vinden bij marktjes en dessertkarretjes.',
     },
     {
       id: 'bkk-d5', name: 'Som Tam', emoji: '🥗',
+      img: 'https://images.unsplash.com/photo-1568332248801-ba28b7b7c8da?w=600&q=80',
       desc: 'Frisse salade van groene (onrijpe) papaja met limoen, vissaus, tomaat en pinda\'s. Origineel pittig — vraag om milde versie.',
       smaak: 'Fris, zuur, licht pittig — vraag "mai pet"',
       tip: 'Geef aan: "som tam mai pet" voor de milde variant. Lekker als bijgerecht naast gekookte rijst.',
@@ -213,24 +218,28 @@ export const dishes = {
   'Chiang Mai': [
     {
       id: 'cnx-d1', name: 'Khao Soi', emoji: '🍲',
+      img: 'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=80',
       desc: 'Dé must-eat van Chiang Mai. Romige kokosmelkcurry-soep met zachte en knapperige noedels, kip of rund, rode ui en augurk ernaast. Uniek noordelijk gerecht.',
       smaak: 'Romig, licht pittig, hartig — mild genoeg voor de meeste mensen',
       tip: 'Absoluut niet overslaan! Beste Khao Soi bij: Khao Soi Lam Duan of Khao Soi Mae Sai nabij het centrum.',
     },
     {
       id: 'cnx-d2', name: 'Sai Oua', emoji: '🌭',
+      img: 'https://images.unsplash.com/photo-1544025162-d76538147e6a?w=600&q=80',
       desc: 'Chiang Mai-worst van varkensvlees met gember, citroengras, laos en kaffirlimoenblaadjes. Gegrild op kooltjes, heerlijke kruidige geur.',
       smaak: 'Kruidig, hartig, licht pittig',
       tip: 'Te vinden op markten (Night Bazaar, Walking Street). Proef een klein stukje bij de kraam voordat je koopt.',
     },
     {
       id: 'cnx-d3', name: 'Gaeng Hang Lay', emoji: '🍖',
+      img: 'https://images.unsplash.com/photo-1574484284002-952d92456975?w=600&q=80',
       desc: 'Traditionele Noord-Thaise curry geïnspireerd op Birmese keuken. Varkensvlees gestoofd in gember, kurkuma en tamarinde. Minder kokosmelk dan andere curry\'s.',
       smaak: 'Diep hartig, licht zoet-zuur, mild',
       tip: 'Veel lokale restaurants in de Oude Stad serveren dit. Goed met sticky rice.',
     },
     {
       id: 'cnx-d4', name: 'Khao Niao (Sticky Rice)', emoji: '🍚',
+      img: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=600&q=80',
       desc: 'Kleverige rijst die je met je handen eet. Hoort bij vrijwel elk Noord-Thais gerecht. Je maakt er een balletje van en doopt het in curry of saus.',
       smaak: 'Neutraal, licht zoetig',
       tip: 'Ella zal dit leuk vinden! Kom in een gevlochten mandje. Grappig om te doen.',
@@ -239,24 +248,28 @@ export const dishes = {
   'Khao Lak': [
     {
       id: 'kl-d1', name: 'Verse zeevruchten', emoji: '🦞',
+      img: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=600&q=80',
       desc: 'Rechtstreeks van de boot: tijgergarnalen, rode snapper, inktvis en kreeft. Gegrild of gestoomd met simpele kruiden. Vers en goedkoop aan de kust.',
       smaak: 'Puur, zout, vers',
       tip: 'Ga naar een visrestaurant aan het strand \'s avonds. Wijs gewoon aan wat je wil in het uitstaldisplay.',
     },
     {
       id: 'kl-d2', name: 'Tom Kha Gai', emoji: '🥥',
+      img: 'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=600&q=80',
       desc: 'Romige kokosmelksoep met kip, galangal (laos), citroengras en kaffirlimoenblaadjes. Minder pittig dan Tom Yum, romiger en zachter van smaak.',
       smaak: 'Romig, licht zuur, mild',
       tip: 'Perfecte soep als het \'s avonds wat afkoelt. Bijna overal te bestellen.',
     },
     {
       id: 'kl-d3', name: 'Pla Kapong Neung Manao', emoji: '🐟',
+      img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600&q=80',
       desc: 'Hele gestoomde zeebaars overgoten met limoen, knoflook, chilisaus en verse kruiden. Een van de meest klassieke visgerechten van Thailand.',
       smaak: 'Fris, licht pittig, citruszuur — vraag om mild',
       tip: 'Zeg: "mai pet" voor een mildere versie. Heerlijk met gestoomde witte rijst.',
     },
     {
       id: 'kl-d4', name: 'Pad Krapow Moo', emoji: '🌿',
+      img: 'https://images.unsplash.com/photo-1562565652-a0d8f0c59eb4?w=600&q=80',
       desc: 'Gehakt varkensvlees roergebakken met heilige basilicum (krapow), knoflook en oestersaus. Geserveerd over rijst met een gebakken ei erop.',
       smaak: 'Hartig, aromatisch, mild pittig',
       tip: 'Vertel "mai pet" voor mild. Standaardgerecht dat overal lekker is. Goed als je twijfelt wat te bestellen.',

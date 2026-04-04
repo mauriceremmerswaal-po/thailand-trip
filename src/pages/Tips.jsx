@@ -157,10 +157,18 @@ export default function Tips() {
               <button
                 key={dish.id}
                 onClick={() => setDishModal(dish)}
-                style={{ display: 'flex', alignItems: 'center', gap: 14, background: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 14, padding: '14px', textAlign: 'left', cursor: 'pointer', width: '100%' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, background: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 14, padding: '10px', textAlign: 'left', cursor: 'pointer', width: '100%', overflow: 'hidden' }}
               >
-                <div style={{ width: 46, height: 46, borderRadius: 12, background: `${cityColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
-                  {dish.emoji}
+                <div style={{ width: 64, height: 64, borderRadius: 10, background: `${cityColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0, overflow: 'hidden', position: 'relative' }}>
+                  {dish.img && (
+                    <img
+                      src={dish.img}
+                      alt={dish.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
+                      onError={e => { e.target.style.display = 'none' }}
+                    />
+                  )}
+                  <span style={{ position: 'relative', zIndex: 1, fontSize: 28 }}>{dish.emoji}</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 14, fontWeight: 700, color: c.text, marginBottom: 2 }}>{dish.name}</div>
@@ -181,28 +189,42 @@ export default function Tips() {
         >
           <div
             onClick={e => e.stopPropagation()}
-            style={{ background: c.cardBg, borderRadius: '20px 20px 0 0', padding: '24px 20px 48px', width: '100%', maxHeight: '80vh', overflowY: 'auto' }}
+            style={{ background: c.cardBg, borderRadius: '20px 20px 0 0', width: '100%', maxHeight: '85vh', overflowY: 'auto' }}
           >
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 16 }}>
-              <div style={{ width: 56, height: 56, borderRadius: 14, background: `${cityColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, flexShrink: 0 }}>
-                {dishModal.emoji}
+            {/* Foto header */}
+            <div style={{ position: 'relative', height: 200, borderRadius: '20px 20px 0 0', overflow: 'hidden', background: `${cityColor}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {dishModal.img && (
+                <img
+                  src={dishModal.img}
+                  alt={dishModal.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  onError={e => { e.target.style.display = 'none' }}
+                />
+              )}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.55))' }} />
+              <div style={{ position: 'absolute', bottom: 14, left: 16, right: 16 }}>
+                <div style={{ fontSize: 22, fontWeight: 900, color: 'white', textShadow: '0 1px 4px rgba(0,0,0,0.4)' }}>{dishModal.emoji} {dishModal.name}</div>
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 20, fontWeight: 900, color: c.text, marginBottom: 4 }}>{dishModal.name}</div>
-                <div style={{ fontSize: 12, background: `${cityColor}18`, color: cityColor, borderRadius: 20, padding: '3px 10px', display: 'inline-block', fontWeight: 700 }}>{dishModal.smaak}</div>
-              </div>
+              <button
+                onClick={() => setDishModal(null)}
+                style={{ position: 'absolute', top: 12, right: 12, width: 32, height: 32, borderRadius: '50%', background: 'rgba(0,0,0,0.35)', border: 'none', color: 'white', fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >✕</button>
             </div>
+
+            <div style={{ padding: '20px 20px 48px' }}>
+              <div style={{ fontSize: 12, background: `${cityColor}18`, color: cityColor, borderRadius: 20, padding: '4px 12px', display: 'inline-block', fontWeight: 700, marginBottom: 14 }}>{dishModal.smaak}</div>
             <div style={{ fontSize: 14, color: c.text, lineHeight: 1.6, marginBottom: 14 }}>{dishModal.desc}</div>
             <div style={{ background: `${cityColor}12`, border: `1px solid ${cityColor}30`, borderRadius: 12, padding: '12px 14px' }}>
               <div style={{ fontSize: 11, fontWeight: 800, color: cityColor, marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>💡 Tip</div>
               <div style={{ fontSize: 13, color: c.text, lineHeight: 1.5 }}>{dishModal.tip}</div>
             </div>
-            <button
-              onClick={() => setDishModal(null)}
-              style={{ marginTop: 20, width: '100%', padding: '14px', background: cityColor, color: 'white', border: 'none', borderRadius: 14, fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
-            >
-              Sluiten
-            </button>
+              <button
+                onClick={() => setDishModal(null)}
+                style={{ marginTop: 20, width: '100%', padding: '14px', background: cityColor, color: 'white', border: 'none', borderRadius: 14, fontSize: 15, fontWeight: 800, cursor: 'pointer' }}
+              >
+                Sluiten
+              </button>
+            </div>
           </div>
         </div>
       )}
