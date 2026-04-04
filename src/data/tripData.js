@@ -177,6 +177,93 @@ export const hotels = [
   },
 ]
 
+export const dishes = {
+  Bangkok: [
+    {
+      id: 'bkk-d1', name: 'Pad Thai', emoji: '🍜',
+      desc: 'Hét nationale gerecht van Thailand. Roergebakken rijstnoedels met garnalen of kip, ei, taugé en bosui, geserveerd met pinda\'s en limoen.',
+      smaak: 'Licht zoet-zout-zuur, mild van smaak',
+      tip: 'Beste bij: straatkraampjes rond Khao San Road of Chinatown. Vraag om "mai pet" (niet pittig) als je het zeker wil.',
+    },
+    {
+      id: 'bkk-d2', name: 'Khao Man Gai', emoji: '🍗',
+      desc: 'Zachte gestoomde kip op rijst die is gekookt in kippenbouillon, met een lichte gember-knoflooksaus ernaast. Simpel maar heerlijk.',
+      smaak: 'Zacht, mild, hartig',
+      tip: 'Goed ontbijtgerecht. Te vinden bij lokale food courts en marktjes. Goedkoop (~฿50).',
+    },
+    {
+      id: 'bkk-d3', name: 'Massaman Curry', emoji: '🍛',
+      desc: 'Rijke, milde curry met aardappel, ui, kokosmelk en pinda\'s. Geïnspireerd door Perzische smaken, geen typisch pittig Thais gerecht.',
+      smaak: 'Mild, licht zoet, romig',
+      tip: 'Ideaal als je niet zo van pittig houdt. In vrijwel elk restaurant te vinden.',
+    },
+    {
+      id: 'bkk-d4', name: 'Mango Sticky Rice', emoji: '🥭',
+      desc: 'Kleverige rijst met warme kokossaus en verse mango. Populair dessert dat je bij straatkraampjes vindt, vooral als mango\'s in seizoen zijn (april = perfect!)',
+      smaak: 'Zoet, romig, fris',
+      tip: 'April is mangoseizoen — perfecte timing! Te vinden bij marktjes en dessertkarretjes.',
+    },
+    {
+      id: 'bkk-d5', name: 'Som Tam', emoji: '🥗',
+      desc: 'Frisse salade van groene (onrijpe) papaja met limoen, vissaus, tomaat en pinda\'s. Origineel pittig — vraag om milde versie.',
+      smaak: 'Fris, zuur, licht pittig — vraag "mai pet"',
+      tip: 'Geef aan: "som tam mai pet" voor de milde variant. Lekker als bijgerecht naast gekookte rijst.',
+    },
+  ],
+  'Chiang Mai': [
+    {
+      id: 'cnx-d1', name: 'Khao Soi', emoji: '🍲',
+      desc: 'Dé must-eat van Chiang Mai. Romige kokosmelkcurry-soep met zachte en knapperige noedels, kip of rund, rode ui en augurk ernaast. Uniek noordelijk gerecht.',
+      smaak: 'Romig, licht pittig, hartig — mild genoeg voor de meeste mensen',
+      tip: 'Absoluut niet overslaan! Beste Khao Soi bij: Khao Soi Lam Duan of Khao Soi Mae Sai nabij het centrum.',
+    },
+    {
+      id: 'cnx-d2', name: 'Sai Oua', emoji: '🌭',
+      desc: 'Chiang Mai-worst van varkensvlees met gember, citroengras, laos en kaffirlimoenblaadjes. Gegrild op kooltjes, heerlijke kruidige geur.',
+      smaak: 'Kruidig, hartig, licht pittig',
+      tip: 'Te vinden op markten (Night Bazaar, Walking Street). Proef een klein stukje bij de kraam voordat je koopt.',
+    },
+    {
+      id: 'cnx-d3', name: 'Gaeng Hang Lay', emoji: '🍖',
+      desc: 'Traditionele Noord-Thaise curry geïnspireerd op Birmese keuken. Varkensvlees gestoofd in gember, kurkuma en tamarinde. Minder kokosmelk dan andere curry\'s.',
+      smaak: 'Diep hartig, licht zoet-zuur, mild',
+      tip: 'Veel lokale restaurants in de Oude Stad serveren dit. Goed met sticky rice.',
+    },
+    {
+      id: 'cnx-d4', name: 'Khao Niao (Sticky Rice)', emoji: '🍚',
+      desc: 'Kleverige rijst die je met je handen eet. Hoort bij vrijwel elk Noord-Thais gerecht. Je maakt er een balletje van en doopt het in curry of saus.',
+      smaak: 'Neutraal, licht zoetig',
+      tip: 'Ella zal dit leuk vinden! Kom in een gevlochten mandje. Grappig om te doen.',
+    },
+  ],
+  'Khao Lak': [
+    {
+      id: 'kl-d1', name: 'Verse zeevruchten', emoji: '🦞',
+      desc: 'Rechtstreeks van de boot: tijgergarnalen, rode snapper, inktvis en kreeft. Gegrild of gestoomd met simpele kruiden. Vers en goedkoop aan de kust.',
+      smaak: 'Puur, zout, vers',
+      tip: 'Ga naar een visrestaurant aan het strand \'s avonds. Wijs gewoon aan wat je wil in het uitstaldisplay.',
+    },
+    {
+      id: 'kl-d2', name: 'Tom Kha Gai', emoji: '🥥',
+      desc: 'Romige kokosmelksoep met kip, galangal (laos), citroengras en kaffirlimoenblaadjes. Minder pittig dan Tom Yum, romiger en zachter van smaak.',
+      smaak: 'Romig, licht zuur, mild',
+      tip: 'Perfecte soep als het \'s avonds wat afkoelt. Bijna overal te bestellen.',
+    },
+    {
+      id: 'kl-d3', name: 'Pla Kapong Neung Manao', emoji: '🐟',
+      desc: 'Hele gestoomde zeebaars overgoten met limoen, knoflook, chilisaus en verse kruiden. Een van de meest klassieke visgerechten van Thailand.',
+      smaak: 'Fris, licht pittig, citruszuur — vraag om mild',
+      tip: 'Zeg: "mai pet" voor een mildere versie. Heerlijk met gestoomde witte rijst.',
+    },
+    {
+      id: 'kl-d4', name: 'Pad Krapow Moo', emoji: '🌿',
+      desc: 'Gehakt varkensvlees roergebakken met heilige basilicum (krapow), knoflook en oestersaus. Geserveerd over rijst met een gebakken ei erop.',
+      smaak: 'Hartig, aromatisch, mild pittig',
+      tip: 'Vertel "mai pet" voor mild. Standaardgerecht dat overal lekker is. Goed als je twijfelt wat te bestellen.',
+    },
+  ],
+}
+
 export const sights = {
   Bangkok: [
     { id: 'b1', name: 'Wat Pho', tip: 'Liggende boeddha, indrukwekkend!', info: '46m lange liggende Boeddha. Open 08:00–18:30, entree ฿200. Thaise massages ook ter plekke te boeken. Tip: ga vóór 09:00 voor rust.' },

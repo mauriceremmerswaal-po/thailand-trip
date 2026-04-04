@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { CITY_COLORS } from '../data/tripData.js'
-import { mapsDirections, mapsSearch, HOME, SCHIPHOL } from '../utils/links.js'
+import { CITY_COLORS, flights } from '../data/tripData.js'
+import { mapsDirections, mapsSearch, HOME, SCHIPHOL, fr24Link } from '../utils/links.js'
 import { useTheme } from '../context/ThemeContext.jsx'
 import { useTripData } from '../context/TripDataContext.jsx'
 import Modal from '../components/Modal.jsx'
@@ -176,6 +176,59 @@ export default function Vandaag() {
           </a>
         </div>
       )}
+
+      {/* Vluchtcheck — toon op vliegdagen */}
+      {(() => {
+        const todayStr = today.toISOString().slice(0, 10)
+        const todayFlights = flights.filter(f => f.date === todayStr && f.flightNr && f.status === 'bevestigd')
+        if (!todayFlights.length) return null
+        return (
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color: c.muted, marginBottom: 10, letterSpacing: '0.07em', textTransform: 'uppercase' }}>✈️ Vluchten vandaag</div>
+            {todayFlights.map(f => {
+              const airlineColor = f.airline === 'Emirates' ? '#c8102e' : f.airline === 'AirAsia' ? '#FF0000' : f.airline === 'VietJet Air' ? '#E40013' : '#6b7280'
+              return (
+                <div key={f.id} style={{ background: c.cardBg, border: `1px solid ${c.border}`, borderRadius: 16, padding: '14px 16px', marginBottom: 10, borderLeft: `4px solid ${airlineColor}` }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ background: airlineColor, borderRadius: 8, padding: '4px 12px' }}>
+                        <span style={{ fontSize: 14, fontWeight: 800, color: 'white' }}>{f.flightNr}</span>
+                      </div>
+                      <span style={{ fontSize: 12, color: c.muted }}>{f.airline}</span>
+                    </div>
+                    <span style={{ fontSize: 11, color: '#10b981', fontWeight: 700, background: '#10b98115', borderRadius: 8, padding: '3px 8px' }}>✅ Bevestigd</span>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 26, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.departure}</div>
+                      <div style={{ fontSize: 11, color: c.muted, marginTop: 1 }}>{f.from.replace(/\s*\([A-Z]{3}\)/, '')}</div>
+                    </div>
+                    <div style={{ textAlign: 'center', padding: '0 4px' }}>
+                      <div style={{ fontSize: 10, color: c.muted, marginBottom: 3 }}>{f.duration}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        <div style={{ width: 20, height: 1.5, background: c.border }} />
+                        <span style={{ fontSize: 12 }}>✈️</span>
+                        <div style={{ width: 20, height: 1.5, background: c.border }} />
+                      </div>
+                    </div>
+                    <div style={{ flex: 1, textAlign: 'right' }}>
+                      <div style={{ fontSize: 26, fontWeight: 900, color: c.text, fontVariantNumeric: 'tabular-nums' }}>{f.arrival}</div>
+                      <div style={{ fontSize: 11, color: c.muted, marginTop: 1 }}>{f.to.replace(/\s*\([A-Z]{3}\)/, '')}</div>
+                    </div>
+                  </div>
+                  <a
+                    href={fr24Link(f.flightNr)}
+                    target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, background: '#FF6B00', color: 'white', borderRadius: 10, padding: '10px', fontSize: 13, fontWeight: 700, textDecoration: 'none' }}
+                  >
+                    📡 Live vluchtstatus bekijken
+                  </a>
+                </div>
+              )
+            })}
+          </div>
+        )
+      })()}
 
       {/* Today / Next day */}
       {displayDay && (
