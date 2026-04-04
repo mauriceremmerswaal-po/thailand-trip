@@ -159,6 +159,27 @@ function FlightCard({ flight: f, color }) {
           </div>
         )}
 
+        {f.stoel && (
+          <div style={{ background: `${color}10`, border: `1px solid ${color}30`, borderRadius: 12, padding: '10px 14px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 20 }}>💺</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 11, color: c.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Stoel</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: color }}>{f.stoel}</div>
+            </div>
+            {f.maaltijd && (
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 11, color: c.muted, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Maaltijd</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: c.text }}>🍽️ {f.maaltijd}</div>
+              </div>
+            )}
+          </div>
+        )}
+        {f.bagage && (
+          <div style={{ background: c.chipBg, borderRadius: 10, padding: '8px 12px', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 16 }}>🧳</span>
+            <span style={{ fontSize: 13, color: c.muted, fontWeight: 600 }}>{f.bagage}</span>
+          </div>
+        )}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {f.aircraft && <Chip label={`✈️ ${f.aircraft}`} c={c} />}
           {f.klasse && <Chip label={`🎟️ ${f.klasse}`} c={c} />}

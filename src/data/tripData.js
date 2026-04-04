@@ -23,6 +23,9 @@ export const flights = [
     klasse: 'Economy Saver',
     type: 'heen',
     status: 'bevestigd',
+    stoel: '18B',
+    bagage: '25 kg ingecheckt · 1× 7 kg handbagage',
+    maaltijd: 'À la carte',
   },
   {
     id: 'ek374',
@@ -39,6 +42,9 @@ export const flights = [
     type: 'heen',
     overstap: 'Overstap Dubai: 1u 35m',
     status: 'bevestigd',
+    stoel: '50B',
+    bagage: '25 kg ingecheckt · 1× 7 kg handbagage',
+    maaltijd: 'À la carte',
   },
   {
     id: 'bkk-cnx',
@@ -102,6 +108,9 @@ export const flights = [
     klasse: 'Economy Saver',
     type: 'terug',
     status: 'bevestigd',
+    stoel: '78J',
+    bagage: '25 kg ingecheckt · 1× 7 kg handbagage',
+    maaltijd: 'À la carte',
   },
   {
     id: 'ek147',
@@ -118,6 +127,9 @@ export const flights = [
     type: 'terug',
     overstap: 'Overstap Dubai: 2u 05m',
     status: 'bevestigd',
+    stoel: '77J',
+    bagage: '25 kg ingecheckt · 1× 7 kg handbagage',
+    maaltijd: 'À la carte',
   },
 ]
 
