@@ -214,6 +214,79 @@ export default function Info() {
         </div>
       </Section>
 
+      {/* Geld & Betalen */}
+      <Section title="💳 Geld & Betalen" c={c}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+
+          {/* ING Betaalpas */}
+          <div style={{ background: c.cardBg, borderRadius: 14, padding: '14px', border: `1px solid ${c.border}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#FF6200', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🏧</div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: c.text }}>ING Betaalpas (debit)</div>
+                <div style={{ fontSize: 11, color: '#f97316', fontWeight: 600 }}>ATM opnames · kosten per keer</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {[
+                '฿220 (~€6) toeslag per opname door Thaise bank',
+                'Neem grote bedragen ineens op: ฿10.000–20.000',
+                'Niet overal te pinnen in winkels',
+                'Max opname per keer: check ING app van tevoren',
+              ].map((tip, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <span style={{ color: '#f97316', fontSize: 12, marginTop: 1, flexShrink: 0 }}>•</span>
+                  <span style={{ fontSize: 13, color: c.muted, lineHeight: 1.4 }}>{tip}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ING Creditcard */}
+          <div style={{ background: c.cardBg, borderRadius: 14, padding: '14px', border: `1px solid ${c.border}` }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: '#FF6200', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>💳</div>
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: c.text }}>ING Creditcard</div>
+                <div style={{ fontSize: 11, color: '#10b981', fontWeight: 600 }}>Aanbevolen voor winkels & restaurants</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {[
+                'Geen Thaise ATM-toeslag — alleen ING wisselkoersopslag',
+                'Werkt bij hotels, restaurants en grotere winkels',
+                'Grab taxi\'s: automatisch via creditcard in de app',
+                'Altijd betalen in THB, nooit in EUR kiezen!',
+              ].map((tip, i) => (
+                <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
+                  <span style={{ color: '#10b981', fontSize: 12, marginTop: 1, flexShrink: 0 }}>•</span>
+                  <span style={{ fontSize: 13, color: c.muted, lineHeight: 1.4 }}>{tip}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Waarschuwing DCC */}
+          <div style={{ background: '#fef3c7', border: '1.5px solid #f59e0b55', borderRadius: 14, padding: '12px 14px', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: '#92400e', marginBottom: 3 }}>Altijd in THB betalen!</div>
+              <div style={{ fontSize: 12, color: '#78350f', lineHeight: 1.4 }}>
+                Als de terminal vraagt "Pay in EUR or THB?" kies altijd <strong>THB</strong>. Betalen in EUR (Dynamic Currency Conversion) kost je 3–5% extra door de wisselkoers van het Thaise bedrijf.
+              </div>
+            </div>
+          </div>
+
+          {/* Contant advies */}
+          <div style={{ background: c.cardBg, borderRadius: 14, padding: '12px 14px', border: `1px solid ${c.border}`, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+            <span style={{ fontSize: 20, flexShrink: 0 }}>💡</span>
+            <div style={{ fontSize: 13, color: c.muted, lineHeight: 1.5 }}>
+              Neem <strong style={{ color: c.text }}>€100–150 contant</strong> mee vanuit Nederland voor de eerste dag (taxi's, kleine aankopen). Daarna pin je bij Thaise geldautomaten of betaal je met creditcard.
+            </div>
+          </div>
+        </div>
+      </Section>
+
       {/* Emergency */}
       <Section title="🚨 Noodgevallen Thailand" c={c}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
